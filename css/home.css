@@ -1,0 +1,37 @@
+.home{
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+
+}
+
+.joinus{
+
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    padding-left: 20.1%;
+    padding-right: 21.5%;
+    gap:104px;
+}
+.joinustxt{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 16px;
+}
+.discover{
+    margin-top: 24px;
+    width: 152px;
+    height: 63px;
+    background: var(--button-green);
+    border-radius: 10px;
+}
+
+.joinusimg{
+    max-width: 404px;
+
+}
+

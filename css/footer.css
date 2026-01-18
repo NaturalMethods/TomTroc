@@ -1,0 +1,36 @@
+
+footer {
+    width: 100%;
+    height: 61px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2.7%;
+    background: var(--bg-footer);
+}
+
+
+footer .logott {
+    margin-right: 4.7%;
+}
+
+/* Footer Copyrights Tom Troc© */
+
+footer .copyrights {
+    width: 64px;
+    height: 15px;
+}
+
+footer .footertext{
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 15px;
+    /* identique à la hauteur de la zone de texte */
+
+    /* Gris foncé */
+    color: #292929;
+
+}
