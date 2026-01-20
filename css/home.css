@@ -3,9 +3,10 @@
     display: flex;
     flex-direction: column;
     max-width: 100%;
-
+    gap: 100px;
 }
 
+/* Join Us */
 .joinus{
 
     display: flex;
@@ -26,12 +27,146 @@
     margin-top: 24px;
     width: 152px;
     height: 63px;
-    background: var(--button-green);
-    border-radius: 10px;
-}
 
+}
 .joinusimg{
     max-width: 404px;
+}
+
+/* Last Books Added */
+.lastbooks{
+    height: 702px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background: #FAF9F7;
+}
+.bookcard{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 324px;
+    border-radius: 10px;
+}
+.newbookslists{
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.bookimg{
+    min-width: 200px;
+    min-height: 200px;
+
 
 }
+.bookcarddesc{
+
+    width: 180px;
+    height: 124px;
+    background: var(--bg-footer);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 0 0 10px 10px;
+
+}
+
+.allBooks{
+    width: 218px;
+    height: 63px;
+}
+
+/* How it works */
+.howitworks{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+.howitworkstext{
+    width: 400px;
+    margin-top: 40px;
+    text-align: center;
+    text-justify: auto;
+}
+.howitworkscards{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 36px;
+    margin-top: 40px;
+}
+.howitworkscard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    max-width: 215px;
+    height: 139px;
+    background: var(--bg-footer);
+    border-radius: 10px;
+
+}
+.howitworksbutton{
+    margin-top: 48px;
+    width: 218px;
+    height: 63px;
+}
+
+/* Our Beliefs */
+.ourbeliefs{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+}
+.ourbeliefstext {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 380px;
+    gap: 10px;
+
+}
+.beliefsign{
+
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    /* identique à la hauteur de la zone de texte */
+
+    /* Gris texte */
+    color: var(--light-gray-text);
+
+    min-width: 120px;
+
+}
+.ourbeliefssvg{
+
+    display: inline-flex;
+    align-items: center;
+
+}
+.ourbeliefssvg svg{
+
+    margin-left: 210px;
+    flex-shrink: 0;
+
+}
+
+
+
+
+
 

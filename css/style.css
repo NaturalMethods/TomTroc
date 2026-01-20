@@ -6,7 +6,10 @@
     --border-light: #dddddd;
     --brand-green: #00a651;
     --button-green: #00AC66;
+    --hover-button: #006D41;
     --button-text: #FFFFFF;
+    --bg-white-button: #F5F3EF;
+    --light-gray-text: #A6A6A6;
 }
 
 
@@ -49,6 +52,18 @@ h4{
     font-size: 28px;
 }
 
+.text{
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    /* identique à la hauteur de la zone de texte */
+    letter-spacing: 0.02em;
+
+    color: var(--text-muted);
+}
+
 p{
     width: 100%;
     margin: 0;
@@ -57,16 +72,35 @@ p{
     font-weight: 300;
     font-size: 16px;
     line-height: 19px;
+
 }
 a,button{
     font-family: 'Inter', sans-serif;
 }
+
+
 button{
-    color: var(--button-text);
     font-size: 16px;
     align-items: center;
     border: none;
+    border-radius: 10px;
 }
+button:hover{
+    color: var(--button-text);
+    background: var(--hover-button);
+
+}
+.greenButton{
+    color: var(--button-text);
+    background: var(--button-green);
+}
+.borderGreenButton{
+    box-sizing: border-box;
+    color: var(--button-green);
+    background: var(--bg-white-button);
+    border: 1px solid var(--button-green);
+}
+
 img{
 
     max-width: 100%;
@@ -81,7 +115,6 @@ a{
     font-size: 14px;
     font-optical-sizing: none;
     line-height: 17px;
-    /* identique à la hauteur de la zone de texte */
     letter-spacing: 0.02em;
 
     color: #292929;

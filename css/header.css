@@ -30,15 +30,40 @@ header {
     gap: 40px;
 }
 
-.nav-link{
-    color: var(--text-muted);
-    padding: 4px 0;
-    position: relative;
-}
+.link-text{
 
-.nav-link.active {
-    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    /* identique à la hauteur de la zone de texte */
+    letter-spacing: 0.02em;
+
+    color: var(--text-muted);
+
+}
+.link {
+    display: inline-flex;
+    align-items: flex-start; /* ou center selon ton besoin */
+    gap: 10px;
+    text-decoration: none;
+}
+.link-text::after{
+
+    content: attr(data-text);
     font-weight: 600;
+    overflow: hidden;
+    height:0;
+    visibility: hidden;
+    display: block;
+}
+.link-text:hover{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    /* identique à la hauteur de la zone de texte */
+
 }
 
 .header__actions{
@@ -47,16 +72,6 @@ header {
     gap: 60px;
 }
 
-.action-link{
-
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    position: relative;
-}
-.action-link:hover{
-    color: var(--text-main);
-}
 
 .badge {
     background-color: #111;
