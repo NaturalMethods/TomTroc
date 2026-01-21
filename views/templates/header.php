@@ -16,8 +16,8 @@
 
         <!-- Navigation -->
         <nav class="header__nav">
-                <a href="#" data-text="Lien" class="link"><span class="link-text" data-text="Accueil">Acceuil</span></a>
-                <a href="#" data-text="Lien" class="link"><span class="link-text" data-text="Nos livres">Nos livres à l'échange</span></a>
+                <a href="index.php?action=home" data-text="Lien" class="link"><span class="link-text" data-text="Accueil">Acceuil</span></a>
+                <a href="index.php?action=books" data-text="Lien" class="link"><span class="link-text" data-text="Nos livres">Nos livres à l'échange</span></a>
         </nav>
 
         <!-- User Actions -->

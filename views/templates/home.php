@@ -4,7 +4,7 @@
 
     <section class="joinus">
         <div class="joinustxt">
-            <h1 class="hus">Rejoignez nos lecteurs passionnés</h1>
+            <h1>Rejoignez nos lecteurs passionnés</h1>
             <p class="pus">Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres. </p>
             <button class="discover greenButton">Découvrir</button>
         </div>

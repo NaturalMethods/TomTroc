@@ -42,38 +42,15 @@
     align-items: center;
     background: #FAF9F7;
 }
-.bookcard{
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    height: 324px;
-    border-radius: 10px;
-}
+
 .newbookslists{
     display: flex;
     flex-direction: row;
     gap: 40px;
 }
 
-.bookimg{
-    min-width: 200px;
-    min-height: 200px;
 
 
-}
-.bookcarddesc{
-
-    width: 180px;
-    height: 124px;
-    background: var(--bg-footer);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-left: 20px;
-    border-radius: 0 0 10px 10px;
-
-}
 
 .allBooks{
     width: 218px;

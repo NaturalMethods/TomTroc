@@ -1,6 +1,7 @@
 :root {
     --bg-header: #F5F3EF;
     --bg-footer: #FFFFFF;
+    --bg-books: #FAF9F7;
     --text-main: #292929;
     --text-muted: #292929;
     --border-light: #dddddd;
@@ -120,3 +121,29 @@ a{
     color: #292929;
 }
 
+.bookcard{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 324px;
+    border-radius: 10px;
+}
+.bookcarddesc{
+
+    width: 180px;
+    height: 124px;
+    background: var(--bg-footer);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 0 0 10px 10px;
+
+}
+.bookimg{
+    min-width: 200px;
+    min-height: 200px;
+
+
+}
