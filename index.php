@@ -19,6 +19,10 @@ try{
             $view->render("books",['title' => "Liste des livres"]);
             break;
 
+        case 'detailbook':
+            $view = new View("detailbook");
+            $view->render("detailbook",['title' => "Liste des livres"]);
+            break;
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

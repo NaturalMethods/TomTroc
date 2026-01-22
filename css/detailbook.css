@@ -1,0 +1,84 @@
+.book{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--bg-books);
+}
+
+.bookimg img{
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bookinfo{
+    margin-top: 60px;
+    margin-left: 85px;
+}
+.bookheader{
+
+    gap: 5px;
+
+}
+.line{
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.titledesc{
+
+    margin-bottom: 25px;
+
+}
+.bookdesc{
+    width: 485px;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    height : 365px;
+}
+
+.descbook{
+
+    width: 485px;
+
+}
+.titleowner{
+
+    margin-top: 30px;
+
+}
+.bookowner{
+    width: fit-content;
+    max-width: 250px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    padding-left: 8px ;
+    padding-right: 8px;
+
+    background: var(--bg-footer);
+    border-radius: 114px;
+
+    flex-wrap: nowrap;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+.ownerimg{
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 114px;
+}
+.ownerusername{
+    width: auto;
+    text-align: center;
+}
+
+.msgbutton{
+    width: 485px;
+    height: 63px;
+    margin-bottom: 80px;
+}

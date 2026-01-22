@@ -1,9 +1,9 @@
 <link rel="stylesheet" type="text/css" href="./css/home.css">
 
-<div class="home">
+<div class="home flex-col">
 
-    <section class="joinus">
-        <div class="joinustxt">
+    <section class="joinus flex-row">
+        <div class="joinustxt flex-col">
             <h1>Rejoignez nos lecteurs passionnés</h1>
             <p class="pus">Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres. </p>
             <button class="discover greenButton">Découvrir</button>
@@ -12,14 +12,14 @@
 
     </section>
 
-    <section class="lastbooks">
+    <section class="lastbooks flex-col">
         <div class="lastbookstitle">
             <h2>Les derniers livres ajoutés</h2>
         </div>
-        <div class="newbookslists">
+        <div class="newbookslists flex-row">
             <div class="bookcard">
 
-                <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+                <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
                 <div class="bookcarddesc">
                     <p>Titre du livre</p>
                     <p>Auteur</p>
@@ -29,7 +29,7 @@
             </div>
             <div class="bookcard">
 
-                <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+                <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
                 <div class="bookcarddesc">
                     <p>Titre du livre</p>
                     <p>Auteur</p>
@@ -39,7 +39,7 @@
             </div>
             <div class="bookcard">
 
-                <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+                <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
                 <div class="bookcarddesc">
                     <p>Titre du livre</p>
                     <p>Auteur</p>
@@ -49,7 +49,7 @@
             </div>
             <div class="bookcard">
 
-                <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+                <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
                 <div class="bookcarddesc">
                     <p>Titre du livre</p>
                     <p>Auteur</p>
@@ -59,10 +59,12 @@
             </div>
 
         </div>
-        <button class="allBooks greenButton">Voir tous les livres</button>
+        <form action="index.php" method="get">
+            <button type="submit" name="action" value="books" class="allBooks greenButton">Voir tous les livres</button>
+        </form>
     </section>
 
-    <section class="howitworks">
+    <section class="howitworks flex-col">
 
         <div class="howitworkstitle">
             <h2>Comment ça marche?</h2>
@@ -70,18 +72,18 @@
         <div class="howitworkstext">
             <p>Échanger des livres avec TomTroc c’est simple et amusant ! Suivez ces étapes pour commencer :</p>
         </div>
-        <div class="howitworkscards">
+        <div class="howitworkscards flex-row">
 
-            <div class="howitworkscard">
+            <div class="howitworkscard flex-col">
                 <p class="test">Inscrivez-vous gratuitement sur notre plateforme.</p>
             </div>
-            <div class="howitworkscard">
+            <div class="howitworkscard flex-col">
                 <p>Ajoutez les livres que vous souhaitez échanger à votre profil.</p>
             </div>
-            <div class="howitworkscard">
+            <div class="howitworkscard flex-col">
                 <p>Parcourez les livres disponibles chez d'autres membres.</p>
             </div>
-            <div class="howitworkscard">
+            <div class="howitworkscard flex-col">
                 <p>Proposez un échange et discutez avec d'autres passionnés de lecture.</p>
             </div>
         </div>
@@ -92,13 +94,13 @@
 
     </section>
 
-    <section class="ourbeliefs">
+    <section class="ourbeliefs flex-col">
 
         <div class="ourbeliefsimg">
             <img src="./img/ourbeliefs.png">
         </div>
 
-        <div class="ourbeliefstext">
+        <div class="ourbeliefstext flex-col">
 
             <div class="ourbeliefstitle">
                 <h2>Nos valeurs</h2>
@@ -106,7 +108,7 @@
 
             <p>Chez Tom Troc, nous mettons l'accent sur le partage, la découverte et la communauté. Nos valeurs sont ancrées dans notre passion pour les livres et notre désir de créer des liens entre les lecteurs. Nous croyons en la puissance des histoires pour rassembler les gens et inspirer des conversations enrichissantes.</p>
             <p>  Notre association a été fondée avec une conviction profonde : chaque livre mérite d'être lu et partagé.</p>
-            <p>Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères.</p></p>
+            <p>Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères.</p>
 
             <div class="ourbeliefssvg">
 

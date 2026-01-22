@@ -13,7 +13,6 @@
     --light-gray-text: #A6A6A6;
 }
 
-
 html,body{
     height: 100%;
     margin: 0;
@@ -51,6 +50,15 @@ h3{
 }
 h4{
     font-size: 28px;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+.flex-row{
+    display: flex;
+    flex-direction: row;
 }
 
 .text{
@@ -141,7 +149,7 @@ a{
     border-radius: 0 0 10px 10px;
 
 }
-.bookimg{
+.bookcardimg{
     min-width: 200px;
     min-height: 200px;
 

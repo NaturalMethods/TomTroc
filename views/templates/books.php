@@ -1,9 +1,9 @@
 
 <link rel="stylesheet" type="text/css" href="./css/books.css">
 
-<section class="books">
+<section class="books flex-col">
 
-    <div class="booksheader">
+    <div class="booksheader flex-row">
 
         <div class="bookstitleheader">
             <h1>Nos livres à l'échange</h1>
@@ -16,7 +16,7 @@
     <div class="bookscards">
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -26,7 +26,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -36,7 +36,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -46,7 +46,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -56,7 +56,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -66,7 +66,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -76,7 +76,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -86,7 +86,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -96,7 +96,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -106,7 +106,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -116,7 +116,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
@@ -126,7 +126,7 @@
         </article>
         <article class="bookcard">
 
-            <img class="bookimg" src="./img/damiers.png" alt="Book 1">
+            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
             <div class="bookcarddesc">
                 <p>Titre du livre</p>
                 <p>Auteur</p>
