@@ -1,0 +1,47 @@
+.registersection{
+
+    background: var(--bg-books);
+    height: 100%;
+}
+
+.register{
+    gap: 50px;
+}
+
+.registerfield{
+    box-sizing: border-box;
+
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
+
+    width: 322px;
+    height: 50px;
+}
+
+.registerform{
+
+    gap: 30px;
+
+}
+.field{
+
+    gap: 10px;
+
+}
+
+.registerButton{
+
+    width: 322px;
+    height: 63px;
+
+}
+.registerimg{
+    height: 100%;
+}
+
+.registerimg .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

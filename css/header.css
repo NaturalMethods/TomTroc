@@ -65,6 +65,10 @@ header {
     /* identique à la hauteur de la zone de texte */
 
 }
+.link-underline {
+    text-decoration: underline;
+}
+
 
 .header__actions{
     display: flex;

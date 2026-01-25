@@ -5,19 +5,6 @@
  */
 class View
 {
-    /**
-     * Le titre de la page.
-     */
-    private string $title;
-
-
-    /**
-     * Constructeur.
-     */
-    public function __construct($title)
-    {
-        $this->title = $title;
-    }
 
     /**
      * Cette méthode retourne une page complète.
@@ -32,7 +19,7 @@ class View
 
         // Les deux variables ci-dessous sont utilisées dans le "main.php" qui est le template principal.
         $content = $this->_renderViewFromTemplate($viewPath, $params);
-        $title = $this->title;
+
         ob_start();
         require(MAIN_VIEW_PATH);
         echo ob_get_clean();

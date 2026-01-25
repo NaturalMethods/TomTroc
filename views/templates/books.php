@@ -14,125 +14,21 @@
 
     </div>
     <div class="bookscards">
-        <article class="bookcard">
 
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
+        <?php foreach($books as $book) { ?>
+            <a href="index.php?action=detailbook&id=<?= $book->getIdBook();?>">
+            <article class="bookcard">
 
-        </article>
-        <article class="bookcard">
+                    <img class="bookcardimg" src="./img/books/<?= $book->getBookImg(); ?>" alt="Book 1">
+                    <div class="bookcarddesc">
+                        <p><?= $book->getTitle(); ?></p>
+                        <p><?= $book->getAuthor(); ?></p>
+                        <p>Vendu par : <?= $book->getOwner(); ?></p>
+                    </div>
 
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
+            </article>
+            </a>
+        <?php } ?>
 
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
-        <article class="bookcard">
-
-            <img class="bookcardimg" src="./img/damiers.png" alt="Book 1">
-            <div class="bookcarddesc">
-                <p>Titre du livre</p>
-                <p>Auteur</p>
-                <p>Vendu par : Pseudo</p>
-            </div>
-
-        </article>
     </div>
 </section>

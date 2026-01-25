@@ -1,0 +1,197 @@
+.accountcontainer {
+
+    background: var(--bg-books);
+    width: 100%;
+}
+
+.account {
+    margin-top: 60px;
+    margin-left: 150px;
+    margin-right: 150px;
+    width: 1140px;
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.accountinfossection {
+
+    width: 100%;
+    height: 510px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+}
+
+.centercol {
+
+    align-items: center;
+    justify-content: center;
+
+}
+
+.leftcol {
+
+    justify-content: flex-start;
+}
+
+.accountinfosviewer {
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+}
+
+.changeaccountinfos {
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    align-items: center;
+    justify-content: center;
+}
+
+.changeaccountinfos input {
+
+    background: #EDF2F6;
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
+
+
+}
+
+
+.roundedcorner {
+
+    border-radius: 20px;
+
+}
+
+.roundeduserimage {
+
+    width: 135px;
+    height: 135px;
+    border-radius: 135px;
+    margin-bottom: 5px;
+}
+
+.librarynumber {
+
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.userinfostext {
+
+    gap: 10px;
+
+}
+
+
+.registerfield {
+    box-sizing: border-box;
+
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
+
+    width: 322px;
+    height: 50px;
+}
+
+input:focus {
+    outline: none;
+    border-bottom: 2px solid #2ecc71;
+}
+
+.registerform {
+
+    gap: 30px;
+
+}
+
+.field {
+
+    gap: 10px;
+
+}
+
+.registerButton {
+
+    width: 322px;
+    height: 63px;
+
+}
+
+.min320 {
+
+    min-width: 320px;
+    text-align: left;
+}
+
+.savebutton {
+
+    width: 150px;
+    height: 63px;
+
+}
+
+.flexstart {
+
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.mybooks {
+    width: 100%;
+    height: 580px;
+    background: #FFFFFF;
+
+    margin-bottom: 100px;
+}
+
+
+.booksgrid {
+    display: grid;
+    height: 100%;
+
+    grid-template-columns: 65px 160px 180px 175px 215px 145px 200px;
+    grid-auto-rows: 130px;
+}
+
+.libraryheader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 130px;
+    border-bottom: 1px solid var(--bg-header);
+}
+
+.librarybookimg {
+    width: 78px;
+    height: 78px;
+    justify-content: center;
+}
+
+.bookcell {
+
+    display: flex;
+    flex-direction: column;
+
+    height: 130px;
+    justify-content: center;
+    border-bottom: 1px solid var(--bg-header);
+
+}
+
+.cellpadright{
+
+    padding-right: 100px;
+}
+
+
+

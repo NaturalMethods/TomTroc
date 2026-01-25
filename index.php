@@ -5,31 +5,46 @@ require_once 'config/autoload.php';
 
 $action = Utils::request('action', 'home');
 
-try{
+try {
 
-    switch($action){
+    switch ($action) {
 
         case 'home':
-            $view = new View("Acceuil");
-            $view->render("home",['title' => "Home"]);
+            $bookController = new BookController();
+            $bookController->showHome();
             break;
 
         case 'books':
-            $view = new View("books");
-            $view->render("books",['title' => "Liste des livres"]);
+            $bookController = new BookController();
+            $bookController->showBooks();
             break;
 
         case 'detailbook':
-            $view = new View("detailbook");
-            $view->render("detailbook",['title' => "Liste des livres"]);
+            $bookController = new BookController();
+            $bookController->showDetailBook();
             break;
+
+        case 'register':
+            $view = new View();
+            $view->render("register", ['title' => "Inscription"]);
+            break;
+
+        case 'connect':
+            $view = new View();
+            $view->render("connect", ['title' => "Connexion"]);
+            break;
+
+        case 'account':
+            $view = new View();
+            $view->render("account", ['title' => "Mon compte"]);
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }
 
 
-
-} catch(Exception $e){
+} catch (Exception $e) {
 
     echo "raté";
 

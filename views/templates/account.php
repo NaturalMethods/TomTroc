@@ -1,0 +1,94 @@
+<link rel="stylesheet" type="text/css" href="./css/account.css">
+
+<div class="accountcontainer">
+    <section class="account flex-col">
+
+        <h4>Mon compte</h4>
+
+        <section class="accountinfossection">
+
+            <div class="accountinfosviewer flex-col roundedcorner">
+
+                <div class=" flex-col ">
+                    <img src="./img/david-lezcano-2.png" class="roundeduserimage">
+                    <span class="lightgrey14pxtext underline centertext">modifier</span>
+                </div>
+
+                <svg width="242" height="1" viewBox="0 0 242 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line y1="0.5" x2="242" y2="0.5" stroke="#F5F3EF"/>
+                </svg>
+
+                <div class="userinfostext flex-col centertext">
+
+                    <h4>nathalire</h4>
+                    <span class="lightgrey14pxtext">Membre depuis 1 an</span>
+                    <span class="capitalblacktext">BIBLIOTHÈQUE</span>
+                    <div class="librarynumber flex-row">
+                        <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M9.46556 0.160154L7.2112 0.00251429C6.65202 -0.0365878 6.16701 0.385024 6.12791 0.944207L5.32192 12.4705C5.28281 13.0296 5.70442 13.5147 6.26361 13.5538L8.51796 13.7114C9.07715 13.7505 9.56215 13.3289 9.60125 12.7697L10.4072 1.24345C10.4464 0.684262 10.0247 0.199256 9.46556 0.160154ZM6.84113 0.99408C6.85269 0.828798 6.99605 0.70418 7.16133 0.715737L9.41568 0.873377C9.58096 0.884935 9.70558 1.02829 9.69403 1.19357L8.88803 12.7198C8.87647 12.8851 8.73312 13.0097 8.56783 12.9982L6.31348 12.8405C6.1482 12.829 6.02358 12.6856 6.03514 12.5203L6.84113 0.99408Z"
+                                  fill="#292929"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M3.27482 0.0648067H1.01496C0.454414 0.0648067 0 0.519224 0 1.07977V12.6342C0 13.1947 0.454416 13.6491 1.01496 13.6491H3.27482C3.83537 13.6491 4.28979 13.1947 4.28979 12.6342V1.07977C4.28979 0.519221 3.83537 0.0648067 3.27482 0.0648067ZM0.714965 1.07977C0.714965 0.914086 0.849279 0.779771 1.01496 0.779771H3.27482C3.44051 0.779771 3.57482 0.914086 3.57482 1.07977V12.6342C3.57482 12.7999 3.44051 12.9342 3.27482 12.9342H1.01496C0.849279 12.9342 0.714965 12.7999 0.714965 12.6342V1.07977Z"
+                                  fill="#292929"/>
+                        </svg>
+                        <span>4 livres</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="changeaccountinfos flex-col roundedcorner">
+
+                <div class="centercol registerform flex-col">
+                    <div class="field flex-col">
+                        <label class="text16px min320">Vos informations personnelles</label>
+                    </div>
+
+                    <div class="field flex-col">
+                        <label for="userMail" class="lightgrey12pxtext">Adresse email</label>
+                        <input class="mailfield registerfield" id="userMail" type="email" name="userMail"/>
+                    </div>
+
+                    <div class="field flex-col">
+                        <label for="userPassword" class="lightgrey12pxtext">Mot de passe</label>
+                        <input class="passwordfield registerfield" id="userPassword" type="password"
+                               name="userPassword"/>
+                    </div>
+
+                    <div class="field flex-col">
+                        <label for="username" class="lightgrey12pxtext">Pseudo</label>
+                        <input class="usernamefield registerfield" id="username" type="text" name="username"/>
+                    </div>
+                    <form class="flex-col flexstart min320" action="index.php" method="get">
+                        <button type="submit" name="action" value="account" class="savebutton borderGreenButton">
+                            Enregistrer
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+        <article class="mybooks roundedcorner">
+            <div class="booksgrid">
+                <div><span class="libraryheader"></span></div>
+                <span class="capitalblacktext libraryheader">PHOTO</span>
+                <span class="capitalblacktext libraryheader">TITRE</span>
+                <span class="capitalblacktext libraryheader">AUTEUR</span>
+                <span class="capitalblacktext libraryheader">DESCRIPTION</span>
+                <span class="capitalblacktext libraryheader">DISPONIBILITÉ</span>
+                <span class="capitalblacktext libraryheader">ACTION</span>
+
+                <span class="bookcell"></span>
+                <div class="bookcell"><img class="librarybookimg" src="./img/books/a book full of hope.jpg" alt="img"></div>
+                <div class="bookcell"><span class="black12pxtext">The Kinkfolk Table</span></div>
+                <div class="bookcell"><span class="black12pxtext">Nathan Williams</span></div>
+                <div class="bookcell cellpadright"><p class="blackitalic12pxtext troncatetext">J'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivanteJ'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivanteJ'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivante</p></div>
+                <div class="bookcell"><span class="disponibility  greendisponibility disponibilitytxt">disponible</span></div>
+                <div class="rowbookcell"><span class="black12pxtext underline">Éditer</span><span class="black12pxtext redtext underline">Supprimer</span></div>
+
+            </div>
+
+        </article>
+
+    </section>
+</div>

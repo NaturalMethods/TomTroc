@@ -36,7 +36,7 @@
             </a>
 
             <!-- Account -->
-            <a href="#" data-text="Lien" class="link">
+            <a href="index.php?action=account" data-text="Lien" class="link">
                 <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="path-1-inside-1_227_966" fill="white">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M4.64286 9.28571C7.20704 9.28571 9.28571 7.20704 9.28571 4.64286C9.28571 2.07868 7.20704 0 4.64286 0C2.07868 0 0 2.07868 0 4.64286C0 7.20704 2.07868 9.28571 4.64286 9.28571ZM4.64286 9.28571C2.07868 9.28571 0 10.1172 0 11.1429C0 12.1685 2.07868 13 4.64286 13C7.20704 13 9.28571 12.1685 9.28571 11.1429C9.28571 10.1172 7.20704 9.28571 4.64286 9.28571Z"/>
@@ -47,7 +47,7 @@
             </a>
 
             <!-- Connection -->
-                <a href="#" data-text="Lien" class="link"><span class="link-text" data-text="Connexion">Connexion</span></a>
+                <a href="index.php?action=connect" data-text="Lien" class="link"><span class="link-text" data-text="Connexion">Connexion</span></a>
         </div>
     </div>
 </header>

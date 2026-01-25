@@ -1,13 +1,11 @@
-.book{
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        background: var(--bg-books);
+.bookimg{
+    min-width: 0;
 }
 
 .bookimg img{
 
     width: 100%;
+    max-width: none;
     height: 100%;
     object-fit: cover;
     display: block;
@@ -15,10 +13,11 @@
 
 .bookinfo{
     margin-top: 60px;
-    margin-left: 85px;
+    min-width: 0;
+    overflow-wrap: break-word;
+    overflow: hidden;
 }
 .bookheader{
-
     gap: 5px;
 
 }
@@ -38,6 +37,9 @@
     overflow: hidden;
     height : 365px;
 }
+.bookdesc p{
+    white-space: pre-line;
+}
 
 .descbook{
 
@@ -50,6 +52,7 @@
 
 }
 .bookowner{
+    margin-top: 25px;
     width: fit-content;
     max-width: 250px;
     height: 60px;
