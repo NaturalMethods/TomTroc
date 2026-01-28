@@ -3,7 +3,7 @@
 class BookManager extends AbstractEntityManager
 {
 
-    public function getLastFourBooks(): array
+    public function getLastFourBooks(): ?array
     {
 
         $sql = "SELECT  b.idBook,
@@ -25,7 +25,7 @@ class BookManager extends AbstractEntityManager
 
     }
 
-    public function getBooks(): array
+    public function getBooks(): ?array
     {
         $sql = "SELECT  *, u.username as owner from books b JOIN users u ON b.idOwner = u.idUser ORDER BY b.idBook DESC;";
         $result = $this->db->query($sql);
@@ -46,6 +46,18 @@ class BookManager extends AbstractEntityManager
             return new Book($book);
         }
         return null;
+    }
+
+    public function getUserBooks(int $idUser): ?array{
+
+        $sql = "SELECT * from books where idOwner = :idUser;";
+        $result = $this->db->query($sql, ['idUser' => $idUser]);
+        $books = [];
+
+        while ($book = $result->fetch())
+            $books[] = new Book($book);
+
+        return $books;
     }
 
 }

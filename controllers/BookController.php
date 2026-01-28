@@ -12,7 +12,8 @@ class BookController
 
     }
 
-    public function showBooks(): void{
+    public function showBooks(): void
+    {
 
         $bookManager = new BookManager();
         $books = $bookManager->getBooks();
@@ -22,18 +23,16 @@ class BookController
 
     }
 
-    public function showDetailBook(): void {
+    public function showDetailBook(): void
+    {
 
         $id = Utils::request("id", -1);
 
         $bookManager = new BookManager();
         $book = $bookManager->getBookByID($id);
 
-        if(!$book){
+        if (!$book) {
             throw new Exception("La page demandée n'existe pas.");
-        }
-        if(!$book->getDescription()){
-            $book->setDescription("La description de ce livre n'a pas encore été renseigné par le propriétaire.");
         }
 
         $view = new View();

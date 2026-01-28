@@ -2,7 +2,7 @@
 
 <section class="registersection twocolumnscreen">
 
-    <div class="register flex-col">
+    <form class="register flex-col" method="POST" action="index.php?action=connectUser">
         <div>
             <h1>Connexion</h1>
         </div>
@@ -10,22 +10,22 @@
 
             <div class="field flex-col">
                 <label for="userMail" class="lightgrey12pxtext">Adresse email</label>
-                <input class="mailfield registerfield" id="userMail" type="email" name="userMail" />
+                <input class="mailfield registerfield" id="userMail" type="email" name="userMail" required/>
             </div>
 
             <div class="field flex-col">
                 <label for="userPassword" class="lightgrey12pxtext">Mot de passe</label>
-                <input class="passwordfield registerfield"  id="userPassword" type="password" name="userPassword" />
+                <input class="passwordfield registerfield"  id="userPassword" type="password" name="userPassword" required/>
             </div>
 
-            <form action="index.php" method="get">
-                <button type="submit" name="action" value="register" class="registerButton greenButton">Se connecter</button>
-            </form>
+            <div>
+                <button type="submit" name="connectButton" value="register" class="registerButton greenButton">Se connecter</button>
+            </div>
 
             <a href="index.php?action=register" data-text="Lien" class="link"><span class="link-text" data-text="Accueil">Pas de compte ? <span class="link-underline">Inscrivez-vous</span></span></a>
 
         </div>
-    </div>
+    </form>
     <div class="registerimg">
         <img src=".\img\marialaura-gionfriddo.png" alt="books">
     </div>

@@ -6,7 +6,9 @@
         <div>
             <h1>Inscription</h1>
         </div>
-        <div class="registerform flex-col">
+        <form class="registerform flex-col" method="POST" action="index.php?action=registerUserInfos" >
+
+            <span class="redtext redbox" <?= $emptyFieldMessage ?>>Tous les champs sont obligatoires</span>
 
             <div class="field flex-col">
                 <label for="username" class="lightgrey12pxtext">Pseudo</label>
@@ -23,13 +25,13 @@
                 <input class="passwordfield registerfield"  id="userPassword" type="password" name="userPassword" />
             </div>
 
-            <form action="index.php" method="get">
-                <button type="submit" name="action" value="register" class="registerButton greenButton">S'inscrire</button>
-            </form>
+            <div>
+                <button type="submit" name="registerButton" class="registerButton greenButton">S'inscrire</button>
+            </div>
 
             <a href="index.php?action=connect" data-text="Lien" class="link"><span class="link-text" data-text="Accueil">Déjà inscrit ? <span class="link-underline">Connectez-vous</span></span></a>
 
-        </div>
+        </form>
     </div>
     <div class="registerimg">
         <img src=".\img\marialaura-gionfriddo.png" alt="books">

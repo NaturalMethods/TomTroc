@@ -10,7 +10,7 @@
             <div class="accountinfosviewer flex-col roundedcorner">
 
                 <div class=" flex-col ">
-                    <img src="./img/david-lezcano-2.png" class="roundeduserimage">
+                    <img src="./img/users_images/<?=$user->getUserPic() ?>" class="roundeduserimage">
                     <span class="lightgrey14pxtext underline centertext">modifier</span>
                 </div>
 
@@ -20,7 +20,7 @@
 
                 <div class="userinfostext flex-col centertext">
 
-                    <h4>nathalire</h4>
+                    <h4><?= $user->getUsername() ?></h4>
                     <span class="lightgrey14pxtext">Membre depuis 1 an</span>
                     <span class="capitalblacktext">BIBLIOTHÈQUE</span>
                     <div class="librarynumber flex-row">
@@ -32,42 +32,45 @@
                                   d="M3.27482 0.0648067H1.01496C0.454414 0.0648067 0 0.519224 0 1.07977V12.6342C0 13.1947 0.454416 13.6491 1.01496 13.6491H3.27482C3.83537 13.6491 4.28979 13.1947 4.28979 12.6342V1.07977C4.28979 0.519221 3.83537 0.0648067 3.27482 0.0648067ZM0.714965 1.07977C0.714965 0.914086 0.849279 0.779771 1.01496 0.779771H3.27482C3.44051 0.779771 3.57482 0.914086 3.57482 1.07977V12.6342C3.57482 12.7999 3.44051 12.9342 3.27482 12.9342H1.01496C0.849279 12.9342 0.714965 12.7999 0.714965 12.6342V1.07977Z"
                                   fill="#292929"/>
                         </svg>
-                        <span>4 livres</span>
+                        <span><?= count($books) ?> livres</span>
                     </div>
                 </div>
 
             </div>
             <div class="changeaccountinfos flex-col roundedcorner">
 
-                <div class="centercol registerform flex-col">
+                <form class="centercol registerform flex-col" action="index.php" method="post">
+
+                    <input type="hidden" name="id" value="<?= $user->getIdUser() ?>">
+
                     <div class="field flex-col">
                         <label class="text16px min320">Vos informations personnelles</label>
                     </div>
 
                     <div class="field flex-col">
                         <label for="userMail" class="lightgrey12pxtext">Adresse email</label>
-                        <input class="mailfield registerfield" id="userMail" type="email" name="userMail"/>
+                        <input class="mailfield registerfield" id="userMail" type="email" name="userMail" placeholder="<?= $user->getMail() ?>"/>
                     </div>
 
                     <div class="field flex-col">
                         <label for="userPassword" class="lightgrey12pxtext">Mot de passe</label>
-                        <input class="passwordfield registerfield" id="userPassword" type="password"
-                               name="userPassword"/>
+                        <input class="passwordfield registerfield" id="userPassword" type="password" name="userPassword" placeholder="••••••••"/>
                     </div>
 
                     <div class="field flex-col">
                         <label for="username" class="lightgrey12pxtext">Pseudo</label>
-                        <input class="usernamefield registerfield" id="username" type="text" name="username"/>
+                        <input class="usernamefield registerfield" id="username" type="text" name="username" placeholder="<?= $user->getUsername() ?>"/>
                     </div>
-                    <form class="flex-col flexstart min320" action="index.php" method="get">
-                        <button type="submit" name="action" value="account" class="savebutton borderGreenButton">
+                    <div class="flex-col flexstart min320">
+                        <button type="submit" name="action" value="changeUserInfos" class="savebutton borderGreenButton">
                             Enregistrer
                         </button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
 
         </section>
+
         <article class="mybooks roundedcorner">
             <div class="booksgrid">
                 <div><span class="libraryheader"></span></div>
@@ -78,14 +81,26 @@
                 <span class="capitalblacktext libraryheader">DISPONIBILITÉ</span>
                 <span class="capitalblacktext libraryheader">ACTION</span>
 
-                <span class="bookcell"></span>
-                <div class="bookcell"><img class="librarybookimg" src="./img/books/a book full of hope.jpg" alt="img"></div>
-                <div class="bookcell"><span class="black12pxtext">The Kinkfolk Table</span></div>
-                <div class="bookcell"><span class="black12pxtext">Nathan Williams</span></div>
-                <div class="bookcell cellpadright"><p class="blackitalic12pxtext troncatetext">J'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivanteJ'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivanteJ'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivante</p></div>
-                <div class="bookcell"><span class="disponibility  greendisponibility disponibilitytxt">disponible</span></div>
-                <div class="rowbookcell"><span class="black12pxtext underline">Éditer</span><span class="black12pxtext redtext underline">Supprimer</span></div>
+                <?php foreach($books as $index => $book) {
+                    if ($book->getDisponibility()) {
+                        $disponibility = "disponible";
+                        $disponibilityclass = "greendisponibility";
+                    }else {
+                        $disponibility = "indisponible";
+                        $disponibilityclass = "reddisponibility";
+                    }
 
+                    $cellcolor = ($index % 2 == 1) ? 'greybookcell' : ' ';
+
+                    ?>
+                    <span class="bookcell <?= $cellcolor ?>"></span>
+                    <div class="bookcell <?= $cellcolor ?>"><img class="librarybookimg" src="./img/books/<?= $book->getBookImg() ?>" alt="img"></div>
+                    <div class="bookcell <?= $cellcolor ?>"><span class="black12pxtext"><?= $book->getTitle() ?></span></div>
+                    <div class="bookcell <?= $cellcolor ?>"><span class="black12pxtext"><?= $book->getAuthor() ?></span></div>
+                    <div class="bookcell cellpadright <?= $cellcolor ?>"><p class="blackitalic12pxtext troncatetext"><?= $book->getDescription() ?></p></div>
+                    <div class="bookcell <?= $cellcolor ?>"><span class="disponibility  <?= $disponibilityclass ?> disponibilitytxt"><?= $disponibility ?></span></div>
+                    <div class="rowbookcell <?= $cellcolor ?>"><span class="black12pxtext underline">Éditer</span><span class="black12pxtext redtext underline">Supprimer</span></div>
+                <?php } ?>
             </div>
 
         </article>

@@ -45,7 +45,7 @@ class Book extends AbstractEntity
     {
         if($description != null)
             $this->description = $description;
-        else $this->description = null;
+        else $this->description = "La description de ce livre n'a pas encore été renseigné par le propriétaire.";
     }
 
     public function getDisponibility(): int

@@ -3,6 +3,10 @@
 require_once 'config/config.php';
 require_once 'config/autoload.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $action = Utils::request('action', 'home');
 
 try {
@@ -25,18 +29,38 @@ try {
             break;
 
         case 'register':
-            $view = new View();
-            $view->render("register", ['title' => "Inscription"]);
+            $userController = new UserController();
+            $userController->showRegister();
             break;
 
         case 'connect':
-            $view = new View();
-            $view->render("connect", ['title' => "Connexion"]);
+            $userController = new UserController();
+            $userController->showConnect();
             break;
 
-        case 'account':
-            $view = new View();
-            $view->render("account", ['title' => "Mon compte"]);
+        case 'myaccount':
+            $userController = new UserController();
+            $userController->showMyAccount();
+            break;
+
+        case 'connectUser':
+            $userController = new UserController();
+            $userController->connectUser();
+            break;
+
+        case 'disconnect':
+            $userController = new UserController();
+            $userController->disconnectUser();
+            break;
+
+        case 'registerUserInfos':
+            $userController = new UserController();
+            $userController->registerUserInfos();
+            break;
+
+        case 'changeUserInfos':
+            $userController = new UserController();
+            $userController->changeUserInfos();
             break;
 
         default:
@@ -47,5 +71,5 @@ try {
 } catch (Exception $e) {
 
     echo "raté";
-
+    echo $e->getMessage();
 }
