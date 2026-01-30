@@ -38,7 +38,7 @@ class UserManager extends AbstractEntityManager
 
     }
 
-    public function modifyUserInfos(int $idUser, string $mail, string $login, string $password): bool
+    public function modifyUserInfos(int $idUser, string $mail, string $username, string $password): bool
     {
         //TODO HASH le mot de passe
         $fields = [];
@@ -49,14 +49,15 @@ class UserManager extends AbstractEntityManager
             $params[':mail'] = $mail;
         }
 
-        if (!empty($login)) {
+        if (!empty($username)) {
             $fields[] = "username = :username";
-            $params[':username'] = $login;
+            $params[':username'] = $username;
         }
 
         if (!empty($password)) {
             $fields[] = "password = :password";
-            $params[':password'] = $password;
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $params[':password'] = $hash;
         }
 
         if (!empty($fields)) {
@@ -75,13 +76,6 @@ class UserManager extends AbstractEntityManager
 
     public function registerUser(string $username, string $password, string $mail): ?int
     {
-        echo "test";
-        if (empty($username) || empty($mail) || empty($password)) {
-
-            header("Location: index.php?action=register&error=emptyFields");
-            exit; // obligatoire après header("Location")
-        }
-
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO users (username, mail, password,role) VALUES (:username, :mail, :password, :role)";

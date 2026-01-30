@@ -43,6 +43,11 @@ try {
             $userController->showMyAccount();
             break;
 
+        case 'account':
+            $userController = new UserController();
+            $userController->showPublicAccount();
+            break;
+
         case 'connectUser':
             $userController = new UserController();
             $userController->connectUser();

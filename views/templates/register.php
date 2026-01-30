@@ -8,7 +8,9 @@
         </div>
         <form class="registerform flex-col" method="POST" action="index.php?action=registerUserInfos" >
 
-            <span class="redtext redbox" <?= $emptyFieldMessage ?>>Tous les champs sont obligatoires</span>
+            <span class="redtext redbox" <?= $errorMessage['emptyFieldMessage'] ?>>Tous les champs sont obligatoires</span>
+            <span class="redtext redbox" <?= $errorMessage['emailExistsMessage'] ?>>Cette adresse mail est déjà utilisée</span>
+            <span class="redtext redbox" <?= $errorMessage['usernameExistsMessage'] ?>>Ce pseudo est déjà utilisée</span>
 
             <div class="field flex-col">
                 <label for="username" class="lightgrey12pxtext">Pseudo</label>

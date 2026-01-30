@@ -7,7 +7,7 @@
 
         <section class="accountinfossection">
 
-            <div class="accountinfosviewer flex-col roundedcorner">
+            <div class="accountinfosviewer flex-col centercol roundedcorner">
 
                 <div class=" flex-col ">
                     <img src="./img/users_images/<?=$user->getUserPic() ?>" class="roundeduserimage">
@@ -46,6 +46,9 @@
                     <div class="field flex-col">
                         <label class="text16px min320">Vos informations personnelles</label>
                     </div>
+                    <span class="redtext redbox" <?= $errorMessage['emailExistsMessage'] ?>>Cette adresse mail est déjà utilisée</span>
+                    <span class="redtext redbox" <?= $errorMessage['usernameExistsMessage'] ?>>Ce pseudo est déjà utilisée</span>
+
 
                     <div class="field flex-col">
                         <label for="userMail" class="lightgrey12pxtext">Adresse email</label>

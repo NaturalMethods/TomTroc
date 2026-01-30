@@ -15,8 +15,14 @@ class BookController
     public function showBooks(): void
     {
 
+        $search = Utils::request("search");
+
         $bookManager = new BookManager();
-        $books = $bookManager->getBooks();
+
+        if (!empty($search))
+            $books = $bookManager->getSearchLikeBooks($search);
+        else
+            $books = $bookManager->getBooks();
 
         $view = new View();
         $view->render("books", ['books' => $books]);

@@ -37,18 +37,35 @@ class BookManager extends AbstractEntityManager
         return $books;
     }
 
+    public function getSearchLikeBooks($search): ?array
+    {
+        $sql = "SELECT b.*, u.username as owner FROM books b join users u on b.idOwner = u.idUser where title LIKE :search 
+                                      OR author LIKE :search 
+                                      OR description LIKE :search 
+                                      ";
+
+        $result = $this->db->query($sql, ["search" => "%$search%"]);
+        $books = [];
+
+        while ($book = $result->fetch()) {
+            $books[] = new Book($book);
+        }
+        return $books;
+    }
+
     public function getBookByID(int $idBook): ?Book
     {
         $sql = "SELECT  b.*, u.username as owner from books b join users u on b.idOwner = u.idUser where b.idBook = :idBook ;";
         $result = $this->db->query($sql, ['idBook' => $idBook]);
         $book = $result->fetch();
-        if($book) {
+        if ($book) {
             return new Book($book);
         }
         return null;
     }
 
-    public function getUserBooks(int $idUser): ?array{
+    public function getUserBooks(int $idUser): ?array
+    {
 
         $sql = "SELECT * from books where idOwner = :idUser;";
         $result = $this->db->query($sql, ['idUser' => $idUser]);

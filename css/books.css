@@ -17,15 +17,23 @@
     justify-content: space-between;
 }
 .bookssearchwrapper{
-
     flex: 0 0 35%;
     min-width: 0;
 }
 .bookssearchbar{
-
     width: 100%;
     min-width: 0;
     height: 50px;
+
+    padding-left: 40px;
+    background-image: url("../img/searchicon.svg");
+    background-repeat: no-repeat;
+    background-position: 12px center;
+    background-size: 20px;
+
+    box-sizing: border-box;
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
 }
 
 .bookscards{

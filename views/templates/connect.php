@@ -8,6 +8,8 @@
         </div>
         <div class="registerform flex-col">
 
+            <span class="redtext redbox" <?= $errorMessage ?>>Les identifiants n'ont pas permis de vous identifier</span>
+
             <div class="field flex-col">
                 <label for="userMail" class="lightgrey12pxtext">Adresse email</label>
                 <input class="mailfield registerfield" id="userMail" type="email" name="userMail" required/>

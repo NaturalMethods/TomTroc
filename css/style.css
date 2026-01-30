@@ -295,7 +295,12 @@ a {
     text-align: center;
 
 }
+.centercol {
 
+    align-items: center;
+    justify-content: center;
+
+}
 .capitalblacktext {
 
     font-family: 'Inter';
@@ -380,4 +385,6 @@ a {
     background: var(--pastel-red);
     border: 1px solid var(--red-text);
     border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
