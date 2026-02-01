@@ -37,12 +37,22 @@ class BookController
         $bookManager = new BookManager();
         $book = $bookManager->getBookByID($id);
 
-        if (!$book) {
-            throw new Exception("La page demandée n'existe pas.");
-        }
+        if (!$book)
+            Utils::redirect("books");
 
         $view = new View();
         $view->render("detailbook", ['book' => $book]);
+    }
+
+    public function showEditBook(): void
+    {
+        //TODO Vérifier que l'utilisateur connecté est le propriétaire du livre
+        //TODO faire un chemin dans le config pour les CSS
+        $bookManager = new BookManager();
+        $book = $bookManager->getBookByID(Utils::request("id", -1));
+
+        $view = new View();
+        $view->render("editbook", ['book' => $book]);
     }
 
 

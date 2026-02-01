@@ -1,0 +1,105 @@
+
+.editbookcontainer {
+    padding-top: 20px;
+    background: var(--bg-books);
+    width: 100%;
+    height: 100%;
+}
+
+.editbook{
+
+    margin: 0 150px 100px 150px;
+    max-width: 90%;
+    height: 100%;
+    overflow: hidden;
+    gap: 30px;
+}
+
+
+.formfield {
+    box-sizing: border-box;
+
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
+
+    width: 435px;
+    height: 50px;
+}
+
+.form {
+
+    gap: 30px;
+
+}
+
+.field {
+
+    gap: 10px;
+
+}
+
+.editbookformcontainer{
+
+    padding-top: 60px;
+    background: var(--bg-footer);
+    width: 100%;
+    height: 80%;
+
+    border-radius: 20px;
+    gap: 10.5%;
+
+
+}
+
+.editbookleftcol{
+    width: 46.5%;
+    padding-left: 50px;
+    height: 100%;
+    gap: 10px;
+    overflow: hidden;
+}
+.image-box{
+    width: 488px;
+    height: 553px;
+    overflow: hidden;
+}
+.editbookimg{
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.textalignright{
+
+    text-align: right;
+}
+
+.editbookrightcol{
+
+    overflow: hidden;
+    width: 43%;
+    padding-right: 50px;
+}
+.commentaryarea{
+
+    box-sizing: border-box;
+
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
+
+    padding: 10px 10px 10px 10px;
+
+    width: 435px;
+    resize: none;
+}
+.validatebutton button{
+
+    width: 322px;
+    height: 63px;
+
+}
+.validatebutton{
+
+    width: 435px;
+}

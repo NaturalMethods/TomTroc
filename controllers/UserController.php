@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 class UserController
 {
 
@@ -61,6 +63,56 @@ class UserController
 
     }
 
+    private function checkUploadedPic(string $location): void
+    {
+        $this->checkIfPicUploadedRight($location);
+        $this->checkPicSize($location);
+    }
+
+    private function checkIfPicUploadedRight(string $location): void
+    {
+
+        if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+            Utils::redirect($location, ['error' => 'picNotUploaded']);
+        }
+
+    }
+
+    private function checkPicSize(string $location): void
+    {
+
+        $maxSize = 8 * 1024 * 1024; // 8 Mo
+
+        if ($_FILES['image']['size'] > $maxSize) {
+            Utils::redirect($location, ['error' => 'picTooBig']);
+        }
+
+    }
+
+    private function checkPicType(string $location): ?string
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $_FILES['image']['tmp_name']);
+
+        $allowed = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (!in_array($mime, $allowed, true)) {
+            Utils::redirect($location, ['error' => 'invalidFile']);
+        }
+
+        return match ($mime) {
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            default => null
+        };
+
+    }
+
     private function setErrorMessage(): ?array
     {
         $error = Utils::request("error", "");
@@ -81,7 +133,8 @@ class UserController
         return $errorMessage;
     }
 
-    private function checkPassword(User $user,string $password): void {
+    private function checkPassword(User $user, string $password): void
+    {
 
         if (!password_verify($password, $user->getPassword())) {
             Utils::redirect("connect", ['error' => 'wrongIDs']);
@@ -102,8 +155,7 @@ class UserController
             throw new Exception("L'utilisateur demandé n'existe pas.");
         }
 
-        //TODO HASHER le mot de passe aussi dans la base donnéé + regenerer sessID eviter la fixation
-        // On vérifie que le mot de passe est correct.
+        //TODO regenerer sessID eviter la fixation.
 
         $this->checkPassword($user, $password);
 
@@ -115,6 +167,7 @@ class UserController
         Utils::redirect("home");
     }
 
+    #[NoReturn]
     public function disconnectUser(): void
     {
         session_unset();
@@ -123,6 +176,29 @@ class UserController
         header('Location: index.php?action=home');
         exit;
     }
+
+    function memberDuration(string $createdAt): string
+    {
+        $created = new DateTime($createdAt);
+        $now = new DateTime();
+        $diff = $created->diff($now);
+
+        if ($diff->y >= 1) {
+            return $diff->y . ' an' . ($diff->y > 1 ? 's' : '');
+        }
+
+        if ($diff->m >= 1) {
+            return $diff->m . ' mois';
+        }
+
+        if ($diff->d >= 1) {
+            return $diff->d . ' jour' . ($diff->d > 1 ? 's' : '');
+        }
+
+        return 'aujourd’hui';
+    }
+
+
 
     public function showMyAccount(): void
     {
@@ -139,14 +215,18 @@ class UserController
         $bookManager = new BookManager();
         $books = $bookManager->getUserBooks($user->getIdUser());
 
+        //TODO faire le bouton éditer et supprimer de la liste des livres
+        // TODO Voir si vraiment utile
         if (!$user)
             throw new Exception("L'utilisateur n'existe pas.");
 
-        if (!$user->getUserPic())
+        if (!$user->getUserPic() || !file_exists('./img/users_images/' . $user->getUserPic()))
             $user->setUserPic("damiers.png");
 
+        $memberAge = $this->memberDuration($user->getCreatedAt());
+
         $view = new View();
-        $view->render("account", ['user' => $user, 'books' => $books, 'errorMessage' => $errorMessage]);
+        $view->render("account", ['user' => $user, 'books' => $books, 'memberAge' => $memberAge ,'errorMessage' => $errorMessage]);
     }
 
     public function showPublicAccount(): void
@@ -166,8 +246,10 @@ class UserController
         if (!$user->getUserPic())
             $user->setUserPic("damiers.png");
 
+        $memberAge = $this->memberDuration($user->getCreatedAt());
+
         $view = new View();
-        $view->render("publicaccount", ['user' => $user, 'books' => $books]);
+        $view->render("publicaccount", ['user' => $user, 'memberAge' => $memberAge ,'books' => $books]);
 
     }
 
@@ -187,7 +269,7 @@ class UserController
 
         $errorMessage = 'hidden';
         $error = Utils::request('error');
-        if($error == "wrongIDs")
+        if ($error == "wrongIDs")
             $errorMessage = '';
 
         $view = new View();
@@ -210,9 +292,40 @@ class UserController
         Utils::redirect("myaccount");
     }
 
+    public function uploadUserPic(): void
+    {
+        $this->checkIfUserIsConnected();
+
+        $this->checkUploadedPic("myaccount");
+        $extension = $this->checkPicType("myaccount");
+
+        $idUser = $_SESSION["idUser"];
+        $userManager = new UserManager();
+        $user = $userManager->getUserByID($idUser);
+        $userOldPic = $user->getUserPic();
+
+        $tmp = $_FILES['image']['tmp_name'];
+        $name = uniqid() . "." . $extension;
+        $userNewPic = './img/users_images/' . $name;
+
+
+        move_uploaded_file($tmp, $userNewPic);
+
+        if (file_exists($userNewPic)) {
+            if ($userManager->setUserPicById($idUser, $name)) {
+                if (!empty($userOldPic) && file_exists('./img/users_images/' . $userOldPic)) {
+                    unlink('./img/users_images/' . $userOldPic);
+                }
+            } else {
+                unlink($userNewPic);
+                Utils::redirect("myaccount", ['error' => 'uploadError']);
+            }
+        }
+        Utils::redirect("myaccount");
+    }
+
     public function registerUserInfos(): void
     {
-        //TODO que la modification ne correspond pas à un autre utilisateur (username ou email)
         $username = Utils::request("username", -1);
         $password = Utils::request("userPassword", -1);
         $mail = Utils::request("userMail", -1);

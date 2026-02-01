@@ -19,7 +19,7 @@
                 <div class="userinfostext flex-col centertext">
 
                     <h4><?= $user->getUsername() ?></h4>
-                    <span class="lightgrey14pxtext">Membre depuis 1 an</span>
+                    <span class="lightgrey14pxtext">Membre depuis <?= $memberAge ?></span>
                     <span class="capitalblacktext">BIBLIOTHÈQUE</span>
                     <div class="librarynumber flex-row">
                         <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">

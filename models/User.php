@@ -61,12 +61,12 @@ class User extends AbstractEntity
         $this->role = $role;
     }
 
-    public function getDate(): string
+    public function getCreatedAt(): string
     {
         return $this->date;
     }
 
-    public function setDate(string $date): void
+    public function setCreatedAt(string $date): void
     {
         $this->date = $date;
     }

@@ -3,7 +3,7 @@
 <article class="twocolumnscreen">
 
     <div class="bookimg">
-        <img src="./img/books/<?= $book->getBookImg(); ?>" alt="frosty-lize">
+        <img src="./img/books/<?= $book->getBookImg(); ?>" alt="<?= $book->getTitle(); ?>">
     </div>
 
     <div class="bookinfo flex-col">
@@ -23,14 +23,15 @@
 
         <span class="titleowner capitalblacktext">PROPRIÉTAIRE</span>
 
-        <div class="bookowner flex-row">
+        <a href="index.php?action=account&id=<?= $book->getIdOwner(); ?>">
+            <div class="bookowner flex-row">
 
-            <img class="ownerimg" src="./img/david-lezcano.png">
-            <p class="ownerusername"><?= $book->getOwner(); ?></p>
+                <img class="ownerimg" src="./img/david-lezcano.png">
+                <p class="ownerusername"><?= $book->getOwner(); ?></p>
 
 
-        </div>
-
+            </div>
+        </a>
         <form action="index.php" method="get">
             <button type="submit" name="action" value="books" class="msgbutton greenButton">Envoyer un message</button>
         </form>

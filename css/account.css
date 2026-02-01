@@ -26,6 +26,13 @@
 }
 
 
+.btn-modifier{
+
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+
+}
+
 .leftcol {
 
     justify-content: flex-start;
@@ -132,11 +139,7 @@ input:focus {
 
 }
 
-.flexstart {
 
-    align-items: flex-start;
-    justify-content: flex-start;
-}
 
 .mybooks {
     width: 100%;

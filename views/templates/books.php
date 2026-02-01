@@ -23,7 +23,7 @@
             <a href="index.php?action=detailbook&id=<?= $book->getIdBook();?>">
             <article class="bookcard">
 
-                    <img class="bookcardimg" src="./img/books/<?= $book->getBookImg(); ?>" alt="Book 1">
+                    <img class="bookcardimg" src="./img/books/<?= $book->getBookImg(); ?>" alt="<?= $book->getTitle(); ?>">
                     <div class="bookcarddesc">
                         <p><?= $book->getTitle(); ?></p>
                         <p><?= $book->getAuthor(); ?></p>

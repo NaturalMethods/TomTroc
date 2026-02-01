@@ -11,7 +11,23 @@
 
                 <div class=" flex-col ">
                     <img src="./img/users_images/<?=$user->getUserPic() ?>" class="roundeduserimage">
-                    <span class="lightgrey14pxtext underline centertext">modifier</span>
+                    <form class="centertext" method="POST" action="index.php" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="uploadUserPic">
+                        <input
+                                type="file"
+                                id="image"
+                                name="image"
+                                accept="image/*"
+                                hidden
+                                onchange="this.form.submit()"
+                        >
+
+                        <label for="image" class="btn-modifier">
+                            <span class="lightgrey14pxtext underline centertext">modifier</span>
+                        </label>
+                    </form>
+
+
                 </div>
 
                 <svg width="242" height="1" viewBox="0 0 242 1" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +37,7 @@
                 <div class="userinfostext flex-col centertext">
 
                     <h4><?= $user->getUsername() ?></h4>
-                    <span class="lightgrey14pxtext">Membre depuis 1 an</span>
+                    <span class="lightgrey14pxtext">Membre depuis <?= $memberAge ?></span>
                     <span class="capitalblacktext">BIBLIOTHÈQUE</span>
                     <div class="librarynumber flex-row">
                         <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">

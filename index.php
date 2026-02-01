@@ -28,6 +28,11 @@ try {
             $bookController->showDetailBook();
             break;
 
+        case 'editbook':
+            $bookController = new BookController();
+            $bookController->showEditBook();
+            break;
+
         case 'register':
             $userController = new UserController();
             $userController->showRegister();
@@ -68,13 +73,16 @@ try {
             $userController->changeUserInfos();
             break;
 
+        case 'uploadUserPic':
+            $userController = new UserController();
+            $userController->uploadUserPic();
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }
 
 
 } catch (Exception $e) {
-
-    echo "raté";
-    echo $e->getMessage();
+    Utils::redirect("home");
 }

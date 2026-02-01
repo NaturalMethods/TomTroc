@@ -141,6 +141,11 @@ input:focus {
     outline: none;
     border-bottom: 2px solid #2ecc71;
 }
+textarea:focus {
+    outline: none;
+    border-top: 2px solid #2ecc71;
+    border-bottom: 2px solid #2ecc71;
+}
 
 button {
     cursor: pointer;
@@ -387,4 +392,10 @@ a {
     border-radius: 10px;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.flexstart {
+
+    align-items: flex-start;
+    justify-content: flex-start;
 }

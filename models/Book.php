@@ -7,6 +7,7 @@ class Book extends AbstractEntity
     private string $author;
     private ?string $description;
     private int $disponibility;
+    private int $idOwner;
     private string $owner;
     private string $bookImg;
 
@@ -55,6 +56,15 @@ class Book extends AbstractEntity
     public function setDisponibility(int $disponibility): void
     {
         $this->disponibility = $disponibility;
+    }
+
+    public function getIdOwner(): int{
+        return $this->idOwner;
+    }
+
+    public function setIdOwner(int $idOwner): void
+    {
+        $this->idOwner = $idOwner;
     }
 
     public function getOwner(): string

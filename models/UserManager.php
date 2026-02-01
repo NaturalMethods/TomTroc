@@ -38,9 +38,22 @@ class UserManager extends AbstractEntityManager
 
     }
 
+    public function setUserPicById(int $idUser,string $name): ?bool{
+
+        $sql = "UPDATE users SET userPic = :name WHERE idUser = :idUser ;";
+        $params = [':idUser' => $idUser,
+                   ':name' => $name     ];
+
+        $result = $this->db->query($sql, $params);
+
+        if ($result->rowCount())
+            return true;
+        else return false;
+    }
+
+
     public function modifyUserInfos(int $idUser, string $mail, string $username, string $password): bool
     {
-        //TODO HASH le mot de passe
         $fields = [];
         $params = [];
 
