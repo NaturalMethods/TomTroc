@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="./css/editbook.css">
+<link rel="stylesheet" type="text/css" href="<?=CSS?>/editbook.css">
 
 <section class="editbookcontainer">
 
@@ -12,7 +12,7 @@
 
                 <span class="lightgrey14pxtext">Photo</span>
                 <div class="image-box">
-                    <img class="editbookimg" src="./img/books/<?= $book->getBookImg(); ?>"
+                    <img class="editbookimg" src="<?= BOOKS_IMAGES.$book->getBookImg(); ?>"
                          alt=<?= $book->getTitle(); ?>>
                 </div>
                 <span class="black12pxtext underline textalignright">Modifier la photo</span>
@@ -22,7 +22,7 @@
 
                 <form class="centercol form flex-col" action="index.php" method="post">
 
-
+                    <input  name="bookId" value="<?= $book->getIdBook(); ?>" type="hidden">
                     <div class="field flex-col">
                         <label for="bookTitle" class="lightgrey12pxtext">Titre</label>
                         <input class=" formfield" id="bookTitle" type="text" name="bookTitle" value="<?= $book->getTitle(); ?>"/>
@@ -43,13 +43,13 @@
                     <div class="field flex-col">
                         <label for="bookDisponibility" class="lightgrey12pxtext">Disponibilité</label>
                         <select class="commentaryarea text" id="bookDisponibility" name="bookDisponibility">
-                            <option value="1">disponible</option>
-                            <option value="0">indisponible</option>
+                            <option value=1 <?php if($book->getDisponibility()) echo "selected"; ?>>disponible</option>
+                            <option value=0 <?php if(!$book->getDisponibility()) echo "selected"; ?>>indisponible</option>
                         </select>
                     </div>
 
                     <div class="validatebutton flex-col flexstart">
-                        <button type="submit" name="action" value="changeUserInfos" class="greenButton">
+                        <button type="submit" name="action" value="changeBookInfos" class="greenButton">
                             Valider
                         </button>
                     </div>

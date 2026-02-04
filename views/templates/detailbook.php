@@ -1,9 +1,9 @@
-<link rel="stylesheet" type="text/css" href="./css/detailbook.css">
+<link rel="stylesheet" type="text/css" href="<?=CSS?>/detailbook.css">
 
-<article class="twocolumnscreen">
+<article class="dividescreen">
 
     <div class="bookimg">
-        <img src="./img/books/<?= $book->getBookImg(); ?>" alt="<?= $book->getTitle(); ?>">
+        <img src="<?= BOOKS_IMAGES.$book->getBookImg(); ?>" alt="<?= $book->getTitle(); ?>">
     </div>
 
     <div class="bookinfo flex-col">
@@ -26,7 +26,7 @@
         <a href="index.php?action=account&id=<?= $book->getIdOwner(); ?>">
             <div class="bookowner flex-row">
 
-                <img class="ownerimg" src="./img/david-lezcano.png">
+                <img class="ownerimg" src="<?= USERS_IMAGES.$userPic ?>">
                 <p class="ownerusername"><?= $book->getOwner(); ?></p>
 
 

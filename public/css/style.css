@@ -16,6 +16,7 @@
     --disponibility-green: #6DC5A1;
     --disponibility-red: #C56D6D;
     --grey-book-cell: #EDF2F6;
+    --search-icon:url("../img/searchicon.svg");
 
 }
 
@@ -319,12 +320,22 @@ a {
     color: var(--text-muted);
 
 }
+.dividescreen {
 
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--bg-books);
+
+    column-gap: 85px;
+}
 .twocolumnscreen {
 
     width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: minmax(350px, 1fr) 1fr;
+    grid-template-columns: 1fr 1fr;
     background: var(--bg-books);
     place-items: center;
 
@@ -347,9 +358,10 @@ a {
 
 .troncatetext{
 
-    white-space: nowrap;       /* ne pas passer à la ligne */
-    overflow: hidden;          /* cacher le texte qui dépasse */
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4; /* nombre de lignes avant les "..." */
+    overflow: hidden;
 }
 
 .disponibility{

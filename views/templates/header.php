@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="./css/header.css">
+<link rel="stylesheet" type="text/css" href=".<?=CSS?>/header.css">
 
 <header class="header">
     <div class="header__grid">

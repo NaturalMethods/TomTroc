@@ -33,6 +33,16 @@ try {
             $bookController->showEditBook();
             break;
 
+        case 'changeBookInfos':
+            $bookController = new BookController();
+            $bookController->changeBookInfos();
+            break;
+
+        case 'deleteBook':
+            $bookController = new BookController();
+            $bookController->deleteBook();
+            break;
+
         case 'register':
             $userController = new UserController();
             $userController->showRegister();

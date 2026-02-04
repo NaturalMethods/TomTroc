@@ -51,6 +51,17 @@ class UserManager extends AbstractEntityManager
         else return false;
     }
 
+    public function getUserPicById(int $idUser): ?String{
+
+        $sql = "SELECT  userPic from users where idUser = :idUser ;";
+        $result = $this->db->query($sql, ['idUser' => $idUser]);
+        $userPic = $result->fetch();
+        if ($userPic) {
+            return $userPic['userPic'];
+        }
+        return null;
+
+    }
 
     public function modifyUserInfos(int $idUser, string $mail, string $username, string $password): bool
     {

@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="./css/publicaccount.css">
+<link rel="stylesheet" type="text/css" href="<?=CSS?>/publicaccount.css">
 
 <div class="accountcontainer">
 
@@ -9,7 +9,7 @@
             <div class="accountinfosviewer flex-col centercol roundedcorner">
 
                 <div class=" flex-col ">
-                    <img src="./img/users_images/<?=$user->getUserPic() ?>" class="roundeduserimage">
+                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" class="roundeduserimage">
                 </div>
 
                 <svg width="242" height="1" viewBox="0 0 242 1" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,22 +49,15 @@
                     <span class="capitalblacktext libraryheader">DESCRIPTION</span>
 
                     <?php foreach($books as $index => $book) {
-                        if ($book->getDisponibility()) {
-                            $disponibility = "disponible";
-                            $disponibilityclass = "greendisponibility";
-                        }else {
-                            $disponibility = "indisponible";
-                            $disponibilityclass = "reddisponibility";
-                        }
-
                         $cellcolor = ($index % 2 == 1) ? 'greybookcell' : ' ';
-
                         ?>
+                        <a href="index.php?action=detailbook&id=<?= $book->getIdBook() ?>" class="grid-item-link">
                         <span class="bookcell <?= $cellcolor ?>"></span>
-                        <div class="bookcell <?= $cellcolor ?>"><img class="librarybookimg" src="./img/books/<?= $book->getBookImg() ?>" alt="img"></div>
+                        <div class="bookcell <?= $cellcolor ?>"><img class="librarybookimg" src="<?= BOOKS_IMAGES.$book->getBookImg() ?>" alt="<?= $book->getTitle(); ?>"></div>
                         <div class="bookcell <?= $cellcolor ?>"><span class="black12pxtext"><?= $book->getTitle() ?></span></div>
                         <div class="bookcell <?= $cellcolor ?>"><span class="black12pxtext"><?= $book->getAuthor() ?></span></div>
                         <div class="bookcell cellpadright <?= $cellcolor ?>"><p class="blackitalic12pxtext troncatetext"><?= $book->getDescription() ?></p></div>
+                            </a>
                     <?php } ?>
                 </div>
 

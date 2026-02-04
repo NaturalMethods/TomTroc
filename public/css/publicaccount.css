@@ -9,6 +9,11 @@
     gap: 30px;
 }
 
+.grid-item-link {
+    display: contents; /* fait en sorte que le lien "englobe" tous les items */
+    text-decoration: none;
+}
+
 .accountinfossection {
 
     width: 100%;

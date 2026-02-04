@@ -37,11 +37,12 @@
 }
 .registerimg{
     height: 100%;
+    overflow: hidden;
 }
 
-.registerimg .img {
+.registerimg img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
+    max-width: none;
+    object-fit: fill;
 }

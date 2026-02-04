@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="./css/home.css">
+<link rel="stylesheet" type="text/css" href="<?=CSS?>home.css">
 
 <div class="home flex-col">
 
@@ -11,7 +11,7 @@
                 <button name="action" value="books" class="discover greenButton">Découvrir</button>
             </form>
         </div>
-        <img class="joinusimg" src="./img/hamza-nouasria.png" alt="ImageJoinUs">
+        <img class="joinusimg" src="<?=IMG?>/hamza-nouasria.png" alt="ImageJoinUs">
 
     </section>
 
@@ -24,7 +24,7 @@
             <a href="index.php?action=detailbook&id=<?= $book->getIdBook();?>">
                 <article class="bookcard">
 
-                    <img class="bookcardimg" src="./img/books/<?= $book->getBookImg(); ?>" alt="Book 1">
+                    <img class="bookcardimg" src="<?=BOOKS_IMAGES.$book->getBookImg(); ?>" alt="<?= $book->getTitle();?>">
                     <div class="bookcarddesc">
                         <p><?= $book->getTitle(); ?></p>
                         <p><?= $book->getAuthor(); ?></p>
@@ -76,7 +76,7 @@
     <section class="ourbeliefs flex-col">
 
         <div class="ourbeliefsimg">
-            <img src="./img/ourbeliefs.png">
+            <img src="<?=IMG?>/ourbeliefs.png">
         </div>
 
         <div class="ourbeliefstext flex-col">

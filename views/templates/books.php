@@ -1,5 +1,5 @@
 
-<link rel="stylesheet" type="text/css" href="./css/books.css">
+<link rel="stylesheet" type="text/css" href="<?=CSS?>/books.css">
 
 <section class="books flex-col">
 
@@ -23,7 +23,7 @@
             <a href="index.php?action=detailbook&id=<?= $book->getIdBook();?>">
             <article class="bookcard">
 
-                    <img class="bookcardimg" src="./img/books/<?= $book->getBookImg(); ?>" alt="<?= $book->getTitle(); ?>">
+                    <img class="bookcardimg" src="<?= BOOKS_IMAGES.$book->getBookImg(); ?>" alt="<?= $book->getTitle(); ?>">
                     <div class="bookcarddesc">
                         <p><?= $book->getTitle(); ?></p>
                         <p><?= $book->getAuthor(); ?></p>

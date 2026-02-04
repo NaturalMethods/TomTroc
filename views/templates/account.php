@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="./css/account.css">
+<link rel="stylesheet" type="text/css" href="<?=CSS?>account.css">
 
 <div class="accountcontainer">
     <section class="account flex-col">
@@ -10,7 +10,7 @@
             <div class="accountinfosviewer flex-col centercol roundedcorner">
 
                 <div class=" flex-col ">
-                    <img src="./img/users_images/<?=$user->getUserPic() ?>" class="roundeduserimage">
+                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" class="roundeduserimage">
                     <form class="centertext" method="POST" action="index.php" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="uploadUserPic">
                         <input
@@ -113,12 +113,31 @@
 
                     ?>
                     <span class="bookcell <?= $cellcolor ?>"></span>
-                    <div class="bookcell <?= $cellcolor ?>"><img class="librarybookimg" src="./img/books/<?= $book->getBookImg() ?>" alt="img"></div>
-                    <div class="bookcell <?= $cellcolor ?>"><span class="black12pxtext"><?= $book->getTitle() ?></span></div>
-                    <div class="bookcell <?= $cellcolor ?>"><span class="black12pxtext"><?= $book->getAuthor() ?></span></div>
-                    <div class="bookcell cellpadright <?= $cellcolor ?>"><p class="blackitalic12pxtext troncatetext"><?= $book->getDescription() ?></p></div>
-                    <div class="bookcell <?= $cellcolor ?>"><span class="disponibility  <?= $disponibilityclass ?> disponibilitytxt"><?= $disponibility ?></span></div>
-                    <div class="rowbookcell <?= $cellcolor ?>"><span class="black12pxtext underline">Éditer</span><span class="black12pxtext redtext underline">Supprimer</span></div>
+                    <div class="bookcell <?= $cellcolor ?>">
+                        <img class="librarybookimg" src="<?= BOOKS_IMAGES.$book->getBookImg() ?>" alt="img">
+                    </div>
+                    <div class="bookcell <?= $cellcolor ?>">
+                        <span class="black12pxtext"><?= $book->getTitle() ?></span>
+                    </div>
+                    <div class="bookcell <?= $cellcolor ?>">
+                        <span class="black12pxtext"><?= $book->getAuthor() ?></span>
+                    </div>
+
+                    <div class="bookcell cellpadright <?= $cellcolor ?>">
+                        <p class="blackitalic12pxtext troncatetext"><?= $book->getDescription() ?></p>
+                    </div>
+
+                    <div class="bookcell <?= $cellcolor ?>">
+                        <span class="disponibility  <?= $disponibilityclass ?> disponibilitytxt"><?= $disponibility ?></span>
+                    </div>
+                    <div class="rowbookcell <?= $cellcolor ?>">
+                        <a href="index.php?action=editbook&id=<?= $book->getIdBook(); ?>">
+                            <span class="black12pxtext underline">Éditer</span>
+                        </a>
+                        <a href="index.php?action=deleteBook&id=<?= $book->getIdBook(); ?>" onclick="return confirm('Voulez-vous vraiment supprimer : <?= $book->getTitle() ?> ?');">
+                            <span class="black12pxtext redtext underline" >Supprimer</span>
+                        </a>
+                    </div>
                 <?php } ?>
             </div>
 

@@ -5,7 +5,7 @@ use JetBrains\PhpStorm\NoReturn;
 class UserController
 {
 
-    private function checkIfUserIsConnected(): void
+    public static function checkIfUserIsConnected(): void
     {
         // On vérifie que l'utilisateur est connecté.
         if (!isset($_SESSION['idUser'])) {
@@ -220,7 +220,7 @@ class UserController
         if (!$user)
             throw new Exception("L'utilisateur n'existe pas.");
 
-        if (!$user->getUserPic() || !file_exists('./img/users_images/' . $user->getUserPic()))
+        if (!$user->getUserPic() || !file_exists(USERS_IMAGES . $user->getUserPic()))
             $user->setUserPic("damiers.png");
 
         $memberAge = $this->memberDuration($user->getCreatedAt());
@@ -306,15 +306,15 @@ class UserController
 
         $tmp = $_FILES['image']['tmp_name'];
         $name = uniqid() . "." . $extension;
-        $userNewPic = './img/users_images/' . $name;
+        $userNewPic = USERS_IMAGES . $name;
 
 
         move_uploaded_file($tmp, $userNewPic);
 
         if (file_exists($userNewPic)) {
             if ($userManager->setUserPicById($idUser, $name)) {
-                if (!empty($userOldPic) && file_exists('./img/users_images/' . $userOldPic)) {
-                    unlink('./img/users_images/' . $userOldPic);
+                if (!empty($userOldPic) && file_exists(USERS_IMAGES . $userOldPic)) {
+                    unlink(USERS_IMAGES. $userOldPic);
                 }
             } else {
                 unlink($userNewPic);
