@@ -88,6 +88,11 @@ try {
             $userController->uploadUserPic();
             break;
 
+        case 'chat':
+            $chatController = new ChatController();
+            $chatController->showChat();
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

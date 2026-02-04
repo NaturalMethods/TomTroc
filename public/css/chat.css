@@ -1,0 +1,101 @@
+.chatsection{
+
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+
+.contactdiv{
+
+    width: 22%;
+    height: 100%;
+    background: var(--bg-books);
+
+
+
+}
+.contacttitle{
+
+    padding-left: 35px;
+    height: 200px;
+    justify-content: center;
+}
+.contactlist{
+
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+}
+.contactwrapper{
+
+    width: 100%;
+    height: 85px;
+    justify-content: center;
+    align-items: center;
+}
+.contact{
+    width: 84%;
+}
+.contact p {
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* nombre de lignes avant les "..." */
+    overflow: hidden;
+
+}
+.contactheader{
+
+    width: 100%;
+    justify-content: space-between;
+
+}
+.contacttext{
+    padding-left: 10px;
+    width: 100%;
+    gap: 10px;
+
+}
+
+
+.chatdiv{
+
+    margin-left: 42px;
+    width: 58%;
+    height: 100%;
+
+}
+
+.chatheader{
+    height: 150px;
+    align-items: center;
+    gap: 10px;
+}
+
+.chatdisplay{
+
+    flex: 1;
+    overflow: auto;
+}
+
+.chatbox{
+    height: 150px;
+    gap: 20px;
+}
+.chatbar{
+
+    width: 75.5%;
+    height: 50px;
+
+    padding-left: 40px;
+    box-sizing: border-box;
+    border: 1px solid #F0F0F0;
+    border-radius: 6px;
+
+}
+.chatsend{
+
+    width: 130px;
+    height: 50px;
+}

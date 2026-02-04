@@ -109,6 +109,11 @@ h6 {
     color: var(--text-muted);
 }
 
+.userroundedimg{
+    width: 50px;
+    height: 50px;
+    border-radius: 114px;
+}
 
 p {
     width: 100%;
@@ -320,6 +325,20 @@ a {
     color: var(--text-muted);
 
 }
+.capital14blacktext {
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 10px;
+    letter-spacing: 0.08em;
+
+    /* Gris foncé */
+    color: var(--text-muted);
+
+}
+
 .dividescreen {
 
     width: 100%;

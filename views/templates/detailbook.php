@@ -26,7 +26,7 @@
         <a href="index.php?action=account&id=<?= $book->getIdOwner(); ?>">
             <div class="bookowner flex-row">
 
-                <img class="ownerimg" src="<?= USERS_IMAGES.$userPic ?>">
+                <img class="userroundedimg" src="<?= USERS_IMAGES.$userPic ?>">
                 <p class="ownerusername"><?= $book->getOwner(); ?></p>
 
 
