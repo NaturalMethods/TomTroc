@@ -1,7 +1,16 @@
 <?php
 
+/**
+ *  This class describe interaction with the users table of database
+ */
 class UserManager extends AbstractEntityManager
 {
+
+    /**
+     * Return a user object by specifying his user id
+     * @param int $idUser
+     * @return User|null
+     */
     public function getUserById(int $idUser): ?User
     {
 
@@ -14,7 +23,13 @@ class UserManager extends AbstractEntityManager
         return null;
     }
 
-    public function getUserByUsername(string $username): ?User{
+    /**
+     * Return a user object by specifying his username
+     * @param string $username
+     * @return User|null
+     */
+    public function getUserByUsername(string $username): ?User
+    {
 
         $sql = "SELECT  * from users where username = :username ;";
         $result = $this->db->query($sql, ['username' => $username]);
@@ -26,7 +41,13 @@ class UserManager extends AbstractEntityManager
 
     }
 
-    public function getUserByMail(string $mail): ?User{
+    /**
+     * Return a user object by specifying his mail
+     * @param string $mail
+     * @return User|null
+     */
+    public function getUserByMail(string $mail): ?User
+    {
 
         $sql = "SELECT  * from users where mail = :mail ;";
         $result = $this->db->query($sql, ['mail' => $mail]);
@@ -38,11 +59,18 @@ class UserManager extends AbstractEntityManager
 
     }
 
-    public function setUserPicById(int $idUser,string $name): ?bool{
+    /**
+     * Update the user image path
+     * @param int $idUser
+     * @param string $name
+     * @return bool|null
+     */
+    public function setUserPicById(int $idUser, string $name): ?bool
+    {
 
         $sql = "UPDATE users SET userPic = :name WHERE idUser = :idUser ;";
         $params = [':idUser' => $idUser,
-                   ':name' => $name     ];
+            ':name' => $name];
 
         $result = $this->db->query($sql, $params);
 
@@ -51,7 +79,13 @@ class UserManager extends AbstractEntityManager
         else return false;
     }
 
-    public function getUserPicById(int $idUser): ?String{
+    /**
+     * Return the user image path
+     * @param int $idUser
+     * @return String|null
+     */
+    public function getUserPicById(int $idUser): ?string
+    {
 
         $sql = "SELECT  userPic from users where idUser = :idUser ;";
         $result = $this->db->query($sql, ['idUser' => $idUser]);
@@ -63,6 +97,14 @@ class UserManager extends AbstractEntityManager
 
     }
 
+    /**
+     * Create the SQL request to modify non-empty specifying fields
+     * @param int $idUser
+     * @param string $mail
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
     public function modifyUserInfos(int $idUser, string $mail, string $username, string $password): bool
     {
         $fields = [];
@@ -98,6 +140,13 @@ class UserManager extends AbstractEntityManager
         return false;
     }
 
+    /**
+     * Create a user in database
+     * @param string $username
+     * @param string $password
+     * @param string $mail
+     * @return int|null
+     */
     public function registerUser(string $username, string $password, string $mail): ?int
     {
         $hash = password_hash($password, PASSWORD_DEFAULT);

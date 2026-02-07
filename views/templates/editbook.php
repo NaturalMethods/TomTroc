@@ -12,10 +12,26 @@
 
                 <span class="lightgrey14pxtext">Photo</span>
                 <div class="image-box">
+
                     <img class="editbookimg" src="<?= BOOKS_IMAGES.$book->getBookImg(); ?>"
                          alt=<?= $book->getTitle(); ?>>
                 </div>
-                <span class="black12pxtext underline textalignright">Modifier la photo</span>
+
+                <form class="textalignright" method="POST" action="index.php" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="uploadBookPic">
+                    <input type="hidden" name="bookId" value="<?= $book->getIdBook(); ?>">
+                    <input
+                            type="file"
+                            id="image"
+                            name="image"
+                            accept="image/*"
+                            hidden
+                            onchange="this.form.submit()"
+                    >
+                    <label for="image" class="btn-modifier">
+                        <span class="black12pxtext underline ">Modifier la photo</span>
+                    </label>
+                </form>
             </div>
 
             <div class="editbookrightcol flex-col">

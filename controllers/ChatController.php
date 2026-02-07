@@ -1,16 +1,26 @@
 <?php
 
+/**
+ * Class controller about Chat page and messages
+ */
 class ChatController
 {
-
-    public static function getUnreadMessagesCount(){
-
+    /**
+     * Return the unread message count of the connected user
+     * @return int
+     */
+    public static function getUnreadMessagesCount()
+    {
         $chatManager = new ChatManager();
-        if(isset($_SESSION['idUser']))
+        if (isset($_SESSION['idUser']))
             return $chatManager->getUnreadMessagesCount($_SESSION['idUser']);
         else return 0;
     }
 
+    /**
+     * Function called to display "chat" page
+     * @return void
+     */
     public function showChat(): void
     {
 
@@ -22,7 +32,7 @@ class ChatController
         // On recupére tout les sender
         $senderList = $chatManager->getSenderList($_SESSION['idUser']);
 
-        $chats=[];
+        $chats = [];
 
         foreach ($senderList as $sender) {
 
@@ -39,7 +49,7 @@ class ChatController
         // Récupérer le chat ouvert si l'idSender spécifié
 
         $view = new View();
-        $view->render("chat",['chats'=>$chats, 'idSender' => null],['unreadMSG' => $this->getUnreadMessagesCount()]);
+        $view->render("chat", ['chats' => $chats, 'idSender' => null], ['unreadMSG' => $this->getUnreadMessagesCount()]);
 
     }
 

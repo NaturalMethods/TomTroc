@@ -1,9 +1,18 @@
 <?php
 
+/**
+ *  This class describe interaction with the messages table of database
+ */
 class ChatManager extends AbstractEntityManager
 {
 
-    public function getUnreadMessagesCount(int $idReceiver): int{
+    /**
+     * Return a count of the messages with unread at 1
+     * @param int $idReceiver
+     * @return int
+     */
+    public function getUnreadMessagesCount(int $idReceiver): int
+    {
 
         $sql = "SELECT COUNT(*) AS nbUnread
                 FROM messages
@@ -14,7 +23,14 @@ class ChatManager extends AbstractEntityManager
 
     }
 
-    public function getSenderList(int $idUser){
+    /**
+     * Return an array of user object with all the distinct sender from
+     * messages send to a receiver
+     * @param int $idUser
+     * @return ?array
+     */
+    public function getSenderList(int $idUser): ?array
+    {
 
         // On récupére les usernames des differentes expediteur
         $sql = "SELECT DISTINCT
@@ -33,38 +49,50 @@ class ChatManager extends AbstractEntityManager
         $users = [];
 
         while ($user = $result->fetch()) {
-            $users[] =  new User($user);
+            $users[] = new User($user);
         }
         return $users;
 
     }
 
-    public function getChatListForUser(int $idUser){
+    /**
+     *
+     * @param int $idUser
+     * @return array
+     *
+     * public function getChatListForUser(int $idUser){
+     *
+     * // On récupére les usernames des differentes expediteur
+     * $sql = "SELECT DISTINCT u.idUser   AS idSender,
+                                * u.username AS senderUsername,
+     * u.userPic AS senderPic
+     * FROM messages m
+     * JOIN users u ON u.idUser = m.idSender
+     * WHERE m.idReceiver = :receiverId
+     * ORDER BY u.username; ";
+ *
+     * $result = $this->db->query($sql, ['receiverId' => $idUser]);
+     * $chats = [];
+     *
+     * while ($chatresult = $result->fetch()) {
+     * $chat =  new Chat($chatresult);
+     * $chats[] = $chat;
+     *
+     * $message = $this->getLastMessagesForUser($idUser, $chat->getIdSender());
+     * $chat->addMessage($message);
+     * }
+     * return $chats;
+     *
+     * }
+     */
 
-        // On récupére les usernames des differentes expediteur
-        $sql = "SELECT DISTINCT u.idUser   AS idSender,
-                                u.username AS senderUsername,
-                                u.userPic AS senderPic
-                FROM messages m
-                JOIN users u ON u.idUser = m.idSender
-                WHERE m.idReceiver = :receiverId
-                ORDER BY u.username; ";
-
-        $result = $this->db->query($sql, ['receiverId' => $idUser]);
-        $chats = [];
-
-        while ($chatresult = $result->fetch()) {
-            $chat =  new Chat($chatresult);
-            $chats[] = $chat;
-
-            $message = $this->getLastMessagesForUser($idUser, $chat->getIdSender());
-            $chat->addMessage($message);
-        }
-        return $chats;
-
-    }
-
-    public function getLastMessage(int $idReceiver, int $idSender) : ?Message
+    /**
+     * Return a message object containing the last message send between 2 users
+     * @param int $idReceiver
+     * @param int $idSender
+     * @return Message|null
+     */
+    public function getLastMessage(int $idReceiver, int $idSender): ?Message
     {
 
         // On récupére les usernames des differentes expediteur

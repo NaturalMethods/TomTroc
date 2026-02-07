@@ -88,6 +88,11 @@ try {
             $userController->uploadUserPic();
             break;
 
+        case 'uploadBookPic':
+            $userController = new UserController();
+            $userController->uploadBookPic();
+            break;
+
         case 'chat':
             $chatController = new ChatController();
             $chatController->showChat();
@@ -99,5 +104,5 @@ try {
 
 
 } catch (Exception $e) {
-    //Utils::redirect("home");
+    Utils::redirect("home");
 }
