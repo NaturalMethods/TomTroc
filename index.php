@@ -99,5 +99,5 @@ try {
 
 
 } catch (Exception $e) {
-    Utils::redirect("home");
+    //Utils::redirect("home");
 }

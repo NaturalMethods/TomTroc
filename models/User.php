@@ -73,14 +73,17 @@ class User extends AbstractEntity
 
     public function getUserPic(): ?string
     {
-        return $this->userPic;
+        if($this->userPic)
+            return $this->userPic;
+        else return IMG."/damiers.png";
+
     }
 
     public function setUserPic(mixed $userPic): void
     {
         if($userPic)
             $this->userPic = $userPic;
-        else $this->userPic = null;
+        else $this->userPic = IMG."/damiers.png";
     }
 
 

@@ -12,7 +12,7 @@ class View
      * @param array $params : les paramètres que le controlleur a envoyé à la vue.
      * @return string
      */
-    public function render(string $viewName, array $params = []): void
+    public function render(string $viewName, array $params = [], mixed $headerparams = []): void
     {
         // On s'occupe de la vue envoyée
         $viewPath = $this->buildViewPath($viewName);
@@ -20,7 +20,12 @@ class View
         // Les deux variables ci-dessous sont utilisées dans le "main.php" qui est le template principal.
         $content = $this->_renderViewFromTemplate($viewPath, $params);
 
+
+
         ob_start();
+        if($headerparams)
+            extract($headerparams);
+
         require(MAIN_VIEW_PATH);
         echo ob_get_clean();
     }

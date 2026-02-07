@@ -226,7 +226,7 @@ class UserController
         $memberAge = $this->memberDuration($user->getCreatedAt());
 
         $view = new View();
-        $view->render("account", ['user' => $user, 'books' => $books, 'memberAge' => $memberAge ,'errorMessage' => $errorMessage]);
+        $view->render("account", ['user' => $user, 'books' => $books, 'memberAge' => $memberAge ,'errorMessage' => $errorMessage],['unreadMSG' => ChatController::getUnreadMessagesCount()]);
     }
 
     public function showPublicAccount(): void
@@ -249,7 +249,7 @@ class UserController
         $memberAge = $this->memberDuration($user->getCreatedAt());
 
         $view = new View();
-        $view->render("publicaccount", ['user' => $user, 'memberAge' => $memberAge ,'books' => $books]);
+        $view->render("publicaccount", ['user' => $user, 'memberAge' => $memberAge ,'books' => $books],['unreadMSG' => ChatController::getUnreadMessagesCount()]);
 
     }
 
@@ -260,7 +260,7 @@ class UserController
         $errorMessage = $this->setErrorMessage();
 
         $view = new View();
-        $view->render("register", ['errorMessage' => $errorMessage]);
+        $view->render("register", ['errorMessage' => $errorMessage],['unreadMSG' => ChatController::getUnreadMessagesCount()]);
     }
 
     public function showConnect(): void
@@ -273,7 +273,7 @@ class UserController
             $errorMessage = '';
 
         $view = new View();
-        $view->render("connect", ['errorMessage' => $errorMessage]);
+        $view->render("connect", ['errorMessage' => $errorMessage],['unreadMSG' => ChatController::getUnreadMessagesCount()]);
     }
 
     public function changeUserInfos(): void

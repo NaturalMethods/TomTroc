@@ -36,7 +36,7 @@
         </form>
     </div>
     <div class="registerimg">
-        <img src=".\img\marialaura-gionfriddo.png" alt="books">
+        <img src="<?=IMG?>marialaura-gionfriddo.png" alt="books">
     </div>
 
 </section>

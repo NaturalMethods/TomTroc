@@ -8,7 +8,7 @@ class BookController
         $books = $bookManager->getLastFourBooks();
 
         $view = new View();
-        $view->render("home", ['books' => $books]);
+        $view->render("home", ['books' => $books], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
 
     }
 
@@ -25,7 +25,7 @@ class BookController
             $books = $bookManager->getBooks();
 
         $view = new View();
-        $view->render("books", ['books' => $books]);
+        $view->render("books", ['books' => $books],['unreadMSG' => ChatController::getUnreadMessagesCount()]);
 
     }
 
@@ -47,7 +47,7 @@ class BookController
             Utils::redirect("books");
 
         $view = new View();
-        $view->render("detailbook", ['book' => $book,'userPic' => $userPic]);
+        $view->render("detailbook", ['book' => $book,'userPic' => $userPic],['unreadMSG' => ChatController::getUnreadMessagesCount()]);
     }
 
     public function checkIfIsBookOwner($idBook): void {
@@ -76,7 +76,7 @@ class BookController
         $book = $bookManager->getBookByID(Utils::request("id", -1));
 
         $view = new View();
-        $view->render("editbook", ['book' => $book]);
+        $view->render("editbook", ['book' => $book], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
     }
 
     public function changeBookInfos(): void {
