@@ -12,7 +12,6 @@ class BookController
      */
     public function showHome(): void
     {
-
         $bookManager = new BookManager();
         $books = $bookManager->getLastFourBooks();
 

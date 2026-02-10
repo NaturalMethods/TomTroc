@@ -12,7 +12,6 @@ class BookManager extends AbstractEntityManager
      */
     public function getLastFourBooks(): ?array
     {
-
         $sql = "SELECT  b.idBook,
                         b.title,
                         b.author,

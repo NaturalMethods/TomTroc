@@ -3,11 +3,13 @@
 
 <section class="chatsection flex-row">
 
+    <script src="<?=JS?>chat.js"></script>
+
     <div class="contactdiv flex-col">
         <div class="contacttitle flex-col">
             <h4>Messagerie</h4>
         </div>
-        <div class="contactlist flex-col">
+        <div id="contactlist" class="contactlist flex-col">
             <?php foreach($chats as $chat) { ?>
             <article class="contactwrapper flex-col">
                 <div class="contact flex-row">

@@ -26,10 +26,18 @@ class ChatController
 
         UserController::checkIfUserIsConnected();
 
-        $chatManager = new ChatManager();
-        //$chats = $chatManager->getChatListForUser($_SESSION['idUser']);
+
 
         // On recupére tout les sender
+
+        $view = new View();
+        $view->render("chat", [], ['unreadMSG' => $this->getUnreadMessagesCount()]);
+
+    }
+
+    public function getSenderList(){
+
+        $chatManager = new ChatManager();
         $senderList = $chatManager->getSenderList($_SESSION['idUser']);
 
         $chats = [];
@@ -42,15 +50,14 @@ class ChatController
             $message = $chatManager->getLastMessage($_SESSION['idUser'], $sender->getIdUser());
             $chat->addMessage($message);
 
-            $chats[] = $chat;
-
+            $chats[]= [ 'username'      => $sender->getUsername(),
+                        'userPic'       => $sender->getUserPic(),
+                        'lastMessage'   => $chat->getLastMessage()->getMessage(),
+                        'sentAt'        => $chat->getLastMessage()->getSentAt()->format('H:i')    ];
         }
 
-        // Récupérer le chat ouvert si l'idSender spécifié
-
-        $view = new View();
-        $view->render("chat", ['chats' => $chats, 'idSender' => null], ['unreadMSG' => $this->getUnreadMessagesCount()]);
-
+        echo json_encode($chats);
+        exit;
     }
 
 }
