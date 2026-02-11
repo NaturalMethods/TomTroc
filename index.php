@@ -103,6 +103,21 @@ try {
             $chatController->getSenderList();
             break;
 
+        case 'getMessages':
+            $chatController = new ChatController();
+            $chatController->getMessages();
+            break;
+
+        case 'sendMessage':
+            $chatController = new ChatController();
+            $chatController->sendMessage();
+            break;
+
+        case 'sendReadMark':
+            $chatController = new ChatController();
+            $chatController->sendReadMark();
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

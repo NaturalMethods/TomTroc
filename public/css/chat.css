@@ -2,6 +2,7 @@
 
     width: 100%;
     height: 100%;
+    max-height: 1000px;
     justify-content: center;
 }
 
@@ -12,7 +13,10 @@
     height: 100%;
     background: var(--bg-books);
 
+}
+.activecontact{
 
+    background: var(--bg-footer);
 
 }
 .contacttitle{
@@ -74,9 +78,40 @@
 }
 
 .chatdisplay{
-
     flex: 1;
     overflow: auto;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-bottom: 130px;
+}
+.msg{
+    width: 100%;
+    gap:10px;
+}
+.msgheader{
+    align-items: center;
+    gap: 5px;
+}
+.msgdate{
+
+}
+
+.msgbubble{
+    width: fit-content;
+    background: var(--bg-footer);
+    border-radius: 3px;
+}
+.msgcontent{
+
+    height: auto;
+    box-sizing: border-box;
+
+    border: none;
+    border-radius: 6px;
+
+    padding: 10px 10px 10px 10px;
+    resize: none;
 }
 
 .chatbox{
@@ -85,7 +120,7 @@
 }
 .chatbar{
 
-    width: 75.5%;
+    width: 85%;
     height: 50px;
 
     padding-left: 40px;

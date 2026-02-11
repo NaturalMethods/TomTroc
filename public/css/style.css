@@ -109,11 +109,31 @@ h6 {
     color: var(--text-muted);
 }
 
+.text12px{
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+
+    /* Gris foncé */
+    color: var(--text-muted);
+
+}
+
 .userroundedimg{
+    min-width: 48px;
     width: 50px;
     height: 50px;
     border-radius: 114px;
 }
+.littleuserroundedimg{
+    width: 25px;
+    height: 25px;
+    border-radius: 114px;
+}
+
 
 p {
     width: 100%;
@@ -207,6 +227,12 @@ a {
     height: 324px;
     border-radius: 10px;
 }
+
+.flex-end{
+    align-items: flex-end;
+}
+
+
 
 .bookcarddesc {
 
@@ -424,7 +450,9 @@ a {
     padding-left: 5px;
     padding-right: 5px;
 }
-
+.textalignright{
+    text-align: right;
+}
 .flexstart {
 
     align-items: flex-start;

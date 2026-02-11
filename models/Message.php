@@ -128,5 +128,17 @@ class Message extends AbstractEntity
         $this->unread = $unread;
     }
 
+    public function toArray(): array{
+
+        return [
+            "idMessage" => $this->idMessage,
+            "sentAt" => $this->sentAt->format("d.m H:i"),
+            "message" => $this->message,
+            "idSender" => $this->idSender,
+            "idReceiver" => $this->idReceiver,
+            "unread" => $this->unread,
+        ];
+
+    }
 
 }

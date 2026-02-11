@@ -50,7 +50,8 @@ class ChatController
             $message = $chatManager->getLastMessage($_SESSION['idUser'], $sender->getIdUser());
             $chat->addMessage($message);
 
-            $chats[]= [ 'username'      => $sender->getUsername(),
+            $chats[]= [ 'userID'        => $sender->getIdUser(),
+                        'username'      => $sender->getUsername(),
                         'userPic'       => $sender->getUserPic(),
                         'lastMessage'   => $chat->getLastMessage()->getMessage(),
                         'sentAt'        => $chat->getLastMessage()->getSentAt()->format('H:i')    ];
@@ -58,6 +59,64 @@ class ChatController
 
         echo json_encode($chats);
         exit;
+    }
+
+    public function getMessages(){
+
+        $contact = Utils::request('id');
+
+        $chatManager = new ChatManager();
+        $messages = $chatManager->getMessages($_SESSION['idUser'], $contact);
+
+        $messagesarray = [];
+
+        foreach ($messages as $message) {
+            $messagesarray[] = $message->toArray();
+        }
+
+        echo json_encode($messagesarray);
+        exit;
+    }
+
+    public function sendMessage(){
+
+        header('Content-Type: application/json');
+
+        $message = $_POST['message'] ?? '';
+        $receiver = $_POST['receiver'] ?? '';
+
+        // Ici, tu ferais l'insertion en base de données
+
+        if(!empty($message) && !empty($receiver)) {
+            // TODO: insertion en base
+            echo json_encode(['status' => $receiver, 'message' => $message]);
+            exit;
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Champs manquants']);
+            exit;
+        }
+
+    }
+
+    public function sendReadMark(){
+
+        $message = $_POST['message'] ?? '';
+        $receiver = $_POST['receiver'] ?? '';
+
+        $chatManager = new ChatManager();
+        $chatManager->updateReadMark($receiver);
+
+        // Ici, tu ferais l'insertion en base de données
+
+        if(!empty($message) && !empty($receiver)) {
+            // TODO: insertion en base
+            echo json_encode(['status' => $receiver, 'message' => $message]);
+            exit;
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Champs manquants']);
+            exit;
+        }
+
     }
 
 }

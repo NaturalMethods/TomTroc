@@ -56,37 +56,6 @@ class ChatManager extends AbstractEntityManager
     }
 
     /**
-     *
-     * @param int $idUser
-     * @return array
-     *
-     * public function getChatListForUser(int $idUser){
-     *
-     * // On récupére les usernames des differentes expediteur
-     * $sql = "SELECT DISTINCT u.idUser   AS idSender,
-                                * u.username AS senderUsername,
-     * u.userPic AS senderPic
-     * FROM messages m
-     * JOIN users u ON u.idUser = m.idSender
-     * WHERE m.idReceiver = :receiverId
-     * ORDER BY u.username; ";
- *
-     * $result = $this->db->query($sql, ['receiverId' => $idUser]);
-     * $chats = [];
-     *
-     * while ($chatresult = $result->fetch()) {
-     * $chat =  new Chat($chatresult);
-     * $chats[] = $chat;
-     *
-     * $message = $this->getLastMessagesForUser($idUser, $chat->getIdSender());
-     * $chat->addMessage($message);
-     * }
-     * return $chats;
-     *
-     * }
-     */
-
-    /**
      * Return a message object containing the last message send between 2 users
      * @param int $idReceiver
      * @param int $idSender
@@ -115,4 +84,32 @@ class ChatManager extends AbstractEntityManager
 
 
     }
+
+    public function getMessages(int $idUser, int $contactId): ?Array
+    {
+
+        $sql = "SELECT
+                        m.*
+                FROM messages m
+                WHERE
+                     (m.idSender = :idSender   AND m.idReceiver = :idReceiver)
+                OR   (m.idSender = :idReceiver AND m.idReceiver = :idSender)
+                ORDER BY m.sentAt DESC;
+                ";
+        $result = $this->db->query($sql, ['idReceiver' => $idUser, 'idSender' => $contactId]);
+        $messages = [];
+
+        while ($message = $result->fetch()) {
+            $messages[] = new Message($message);
+        }
+        return $messages;
+    }
+
+    public function updateReadMark(int $idSender): void{
+
+        $sql = "UPDATE messages set unread = 0 WHERE idSender = :idSender ; ";
+        $result = $this->db->query($sql, ['idSender' => $idSender]);
+        $result->fetch();
+    }
+
 }
