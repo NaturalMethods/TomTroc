@@ -7,7 +7,8 @@ fetch('index.php?action=getSenderList')
 
         addChatListArticles(chatlist)
     });
-
+//TODO pollNewMessages pour tout les contacts et rajouter  les nouveaux contacts de msg
+pollNewMessages();
 
 
 function addChatListArticles(chatlist){
@@ -15,13 +16,18 @@ function addChatListArticles(chatlist){
     let contactlist = document.getElementById('contactlist');
 
 
-    chatlist.forEach(chat => {
+    chatlist.forEach((chat,index) => {
         // Créer l'article
         let article = getContactArticleOfChatList(chat);
+
+
         // Ajouter à ton container
         contactlist.appendChild(article);
+        if(index===0)
+            selectContactChat(article,chat);
     });
 
+    setSendMessageListener();
 }
 
 function getContactArticleOfChatList(chat){
@@ -64,8 +70,6 @@ function selectContactChat(article,chat){
     clearChatDisplay();
     fetchChatMessagesWithSenderID(chat['userID']);
 
-
-    setSendMessageListener();
 
     setNewContactArticleActive(article);
     sendReadMark();
@@ -142,6 +146,7 @@ function addMessageToChatDisplay(message){
     if(isMessageFromContact(activeuserID,message['idSender'].toString())) {
         msgbubble.className = "msg flex-end flex-col";
         msgbubble.innerHTML = `<div class="msgheader flex-row">
+                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
                                     <span class="msgdate textalignright  lightgrey12pxtext">${message["sentAt"]}</span>
                                 </div>
                                 <div class="msgbubble">
@@ -151,6 +156,43 @@ function addMessageToChatDisplay(message){
         msgbubble.className = "msg flex-col";
 
         msgbubble.innerHTML = `<div class="msgheader flex-row">
+                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
+                                    <img class="littleuserroundedimg" src="${contactimg.src}"/>
+                                    <span class="msgdate lightgrey12pxtext">${message["sentAt"]}</span>
+                                </div>
+                                <div class="msgbubble">
+                                    <p class="msgcontent text12px" >${message["message"]}</p>
+                                </div>      `;
+    }
+
+
+    chatdisplay.appendChild(msgbubble);
+    chatdisplay.scrollTop = 0;
+}
+
+function addNewMsgToDisplay(message){
+
+    let contactlist = document.getElementById('contactlist');
+    let activeuserID = contactlist.querySelector('.activecontact').querySelector('.userID').value;
+    let contactimg = contactlist.querySelector('.userroundedimg.activeimg');
+
+    const msgbubble = document.createElement('div');
+
+
+    if(isMessageFromContact(activeuserID,message['idSender'].toString())) {
+        msgbubble.className = "msg flex-end flex-col";
+        msgbubble.innerHTML = `<div class="msgheader flex-row">
+                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
+                                    <span class="msgdate textalignright  lightgrey12pxtext">${message["sentAt"]}</span>
+                                </div>
+                                <div class="msgbubble">
+                                    <p class="msgcontent text12px" >${message["message"]}</p>
+                                </div>      `;
+    } else {
+        msgbubble.className = "msg flex-col";
+
+        msgbubble.innerHTML = `<div class="msgheader flex-row">
+                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
                                     <img class="littleuserroundedimg" src="${contactimg.src}"/>
                                     <span class="msgdate lightgrey12pxtext">${message["sentAt"]}</span>
                                 </div>
@@ -161,6 +203,7 @@ function addMessageToChatDisplay(message){
 
 
     chatdisplay.prepend(msgbubble);
+    chatdisplay.scrollTop = 0;
 
 }
 
@@ -176,32 +219,75 @@ function setSendMessageListener(){
 
         const inputMessage = document.querySelector('#chatbar');
         let receiverId = document.querySelector('.activecontact').querySelector('#userID').value;
-        console.log("Envoyer a:"+ receiverId);
         sendMessageToServer(inputMessage.value, receiverId);
         inputMessage.value = ''; // vider le champ
     });
 
 }
 
-function sendMessageToServer(messageText, receiverID) {
-    // Crée les données à envoyer
-    const data = new FormData();
-    data.append('message', messageText);
-    data.append('receiver', receiverID);
+async function pollNewMessages() {
+    try {
+        await fetchNewMessages();
+    } catch (error) {
+        console.error("Erreur lors du polling :", error);
+    } finally {
+        setTimeout(pollNewMessages, 5000);
+    }
+}
 
-    // Appel fetch vers sendMessage.php
-    fetch(`index.php?action=sendMessage&id=${receiverID}`, {
-        method: 'POST',
-        body: data
-    })
-        .then(response => response.json()) // si PHP renvoie du JSON
-        .then(result => {
-            console.log('Message envoyé:', result);
-            // Ici tu peux mettre à jour l'UI, vider le champ input, etc.
+async function fetchNewMessages() {
+    try {
+        if (document.querySelector('.activecontact') !== null) {
+            let contactId = document.querySelector('.activecontact').querySelector('#userID').value;
+            let msgId = document.querySelector('#chatdisplay').firstElementChild.querySelector('#idMsg').value;
+
+            console.log("IDMSG" + msgId);
+
+            const response = await fetch("index.php?action=newMessage&id=" + contactId + "&idMsg=" + msgId);
+            const messages = await response.json();
+
+            if (messages.length > 0) {
+                messages.forEach(msg => {
+                    console.log("res:" + msg['message']);
+
+                    if (msg['idMessage'] > msgId)
+                        addNewMsgToDisplay(msg); // fonction d'affichage
+                });
+            }
+        }
+    }
+    catch
+        (error)
+        {
+            console.error("Erreur polling :", error);
+        }
+
+}
+
+function sendMessageToServer(messageText, receiverID) {
+
+    if(messageText > 0) {
+
+        // Crée les données à envoyer
+        const data = new FormData();
+        data.append('message', messageText);
+        data.append('receiver', receiverID);
+
+        // Appel fetch vers sendMessage.php
+        fetch(`index.php?action=sendMessage&id=${receiverID}`, {
+            method: 'POST',
+            body: data
         })
-        .catch(error => {
-            console.error('Erreur lors de l\'envoi:', error);
-        });
+            .then(response => response.json()) // si PHP renvoie du JSON
+            .then(result => {
+                console.log('Message envoyé:', result);
+                // Ici tu peux mettre à jour l'UI, vider le champ input, etc.
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'envoi:', error);
+            });
+        fetchNewMessages();
+    }
 }
 
 function sendReadMark(){

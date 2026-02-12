@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 /**
  * Class controller about Chat page and messages
  */
@@ -88,7 +90,9 @@ class ChatController
         // Ici, tu ferais l'insertion en base de données
 
         if(!empty($message) && !empty($receiver)) {
-            // TODO: insertion en base
+            $chatManager = new ChatManager();
+            $chatManager->addMessageToDB($message, $_SESSION['idUser'], $receiver);
+
             echo json_encode(['status' => $receiver, 'message' => $message]);
             exit;
         } else {
@@ -103,19 +107,39 @@ class ChatController
         $message = $_POST['message'] ?? '';
         $receiver = $_POST['receiver'] ?? '';
 
-        $chatManager = new ChatManager();
-        $chatManager->updateReadMark($receiver);
 
-        // Ici, tu ferais l'insertion en base de données
+
 
         if(!empty($message) && !empty($receiver)) {
-            // TODO: insertion en base
+
+            $chatManager = new ChatManager();
+            $chatManager->updateReadMark($receiver);
             echo json_encode(['status' => $receiver, 'message' => $message]);
-            exit;
+            exit();
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Champs manquants']);
-            exit;
+            exit();
         }
+
+    }
+
+    #[NoReturn]
+    public function getNewMessages(): void{
+
+        $contact = Utils::request('id');
+        $idMessage =(int) Utils::request('idMsg');
+
+        $chatManager = new ChatManager();
+        $messages = $chatManager->getUnreadMessages($_SESSION['idUser'], $contact, $idMessage);
+
+        $messagesarray = [];
+
+        foreach ($messages as $message) {
+            $messagesarray[] = $message->toArray();
+        }
+
+        echo json_encode($messagesarray);
+        exit;
 
     }
 

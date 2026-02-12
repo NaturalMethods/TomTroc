@@ -16,7 +16,7 @@
     </div>
     <div id="chatdiv" class="chatdiv flex-col">
 
-        <div id="chatdisplay" class="chatdisplay flex-col">
+        <div id="chatdisplay" class="chatdisplay ">
 
 
         </div>

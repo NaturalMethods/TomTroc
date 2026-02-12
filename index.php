@@ -118,10 +118,13 @@ try {
             $chatController->sendReadMark();
             break;
 
+        case 'newMessage':
+            $chatController = new ChatController();
+            $chatController->getNewMessages();
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }
-
 
 } catch (Exception $e) {
     echo $e->getMessage();

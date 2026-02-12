@@ -105,11 +105,46 @@ class ChatManager extends AbstractEntityManager
         return $messages;
     }
 
+    public function getUnreadMessages(int $idUser, int $contactId, int $idMessage): ?Array{
+
+        $sql = "SELECT
+                        m.*
+                FROM messages m
+                WHERE
+                     ((m.idSender = :idSender   AND m.idReceiver = :idReceiver)
+                OR   (m.idSender = :idReceiver AND m.idReceiver = :idSender))
+                AND m.idMessage > :idMessage
+                ORDER BY m.sentAt DESC;
+                ";
+        $result = $this->db->query($sql, ['idReceiver' => $idUser, 'idSender' => $contactId, 'idMessage' => $idMessage]);
+        $messages = [];
+
+        while ($message = $result->fetch()) {
+            $messages[] = new Message($message);
+        }
+        return $messages;
+
+    }
+
     public function updateReadMark(int $idSender): void{
 
         $sql = "UPDATE messages set unread = 0 WHERE idSender = :idSender ; ";
         $result = $this->db->query($sql, ['idSender' => $idSender]);
         $result->fetch();
+    }
+
+    public function addMessageToDB($message, $idSender, $idReceiver): ?int{
+
+        $sql = "INSERT INTO messages (message,idSender,idReceiver) VALUES (:message, :idSender, :idReceiver);";
+        $params = [
+            'message' => $message,
+            'idSender' => $idSender,
+            'idReceiver' => $idReceiver,
+        ];
+
+        //TODO créer une fonction qui gere les retours SQL pour les select, insert, update...)
+        $result = $this->db->query($sql, $params);
+        return $this->db->getPDO()->lastInsertId();
     }
 
 }
