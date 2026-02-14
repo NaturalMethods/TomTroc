@@ -9,7 +9,7 @@
             <div class="accountinfosviewer flex-col centercol roundedcorner">
 
                 <div class=" flex-col ">
-                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" class="roundeduserimage">
+                    <img src="<?=$user->getUserPic() ?>" alt="user image" class="roundeduserimage">
                 </div>
 
                 <svg width="242" height="1" viewBox="0 0 242 1" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,8 @@
                 </div>
 
                 <form action="index.php" method="get">
-                    <button type="submit" name="action" class="sendMSGPubAccount borderGreenButton">Écrire un message</button>
+                    <input type="hidden" name="ownerID" value="<?= $user->getIdUser(); ?>">
+                    <button type="submit" name="action" value="addContact" class="sendMSGPubAccount borderGreenButton">Écrire un message</button>
                 </form>
 
             </div>

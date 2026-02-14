@@ -100,7 +100,7 @@ try {
 
         case 'getSenderList':
             $chatController = new ChatController();
-            $chatController->getSenderList();
+            $chatController->getConversations();
             break;
 
         case 'getMessages':
@@ -121,6 +121,11 @@ try {
         case 'newMessage':
             $chatController = new ChatController();
             $chatController->getNewMessages();
+
+        case 'addContact':
+            $chatController = new ChatController();
+            $chatController->sendMessageToConUser();
+            break;
 
         default:
             throw new Exception("La page demandée n'existe pas.");

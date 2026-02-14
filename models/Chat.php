@@ -8,8 +8,6 @@ class Chat extends AbstractEntity
     private User $senderUser;
     private array $messages;
 
-    //TODO ajouter les message du receiver aussi
-
     /**
      * Return an array with all the messages of the chat
      * @return array

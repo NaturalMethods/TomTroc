@@ -11,7 +11,7 @@ class ChatController
      * Return the unread message count of the connected user
      * @return int
      */
-    public static function getUnreadMessagesCount()
+    public static function getUnreadMessagesCount(): int
     {
         $chatManager = new ChatManager();
         if (isset($_SESSION['idUser']))
@@ -28,117 +28,151 @@ class ChatController
 
         UserController::checkIfUserIsConnected();
 
-
-
-        // On recupére tout les sender
-
         $view = new View();
         $view->render("chat", [], ['unreadMSG' => $this->getUnreadMessagesCount()]);
 
     }
 
-    public function getSenderList(){
+    /**
+     * Send a conversation list with their last messages of the user connected to the client
+     * @return void
+     */
+    #[NoReturn]
+    public function getConversations(): void
+    {
+        UserController::checkIfUserIsConnected();
+        //TODO Réaliser un lastMessageID Global
 
         $chatManager = new ChatManager();
-        $senderList = $chatManager->getSenderList($_SESSION['idUser']);
-
-        $chats = [];
-
-        foreach ($senderList as $sender) {
-
-            $chat = new Chat();
-            $chat->setSenderUser($sender);
-
-            $message = $chatManager->getLastMessage($_SESSION['idUser'], $sender->getIdUser());
-            $chat->addMessage($message);
-
-            $chats[]= [ 'userID'        => $sender->getIdUser(),
-                        'username'      => $sender->getUsername(),
-                        'userPic'       => $sender->getUserPic(),
-                        'lastMessage'   => $chat->getLastMessage()->getMessage(),
-                        'sentAt'        => $chat->getLastMessage()->getSentAt()->format('H:i')    ];
-        }
+        $chats = $chatManager->getConversations($_SESSION['idUser']);
 
         echo json_encode($chats);
         exit;
     }
 
-    public function getMessages(){
+    /**
+     * Send all messages between a contact and the user connected to the client
+     * @return void
+     */
+    #[NoReturn]
+    public function getMessages(): void
+    {
+
+        UserController::checkIfUserIsConnected();
 
         $contact = Utils::request('id');
-
+        //TODO check ID du contact
         $chatManager = new ChatManager();
         $messages = $chatManager->getMessages($_SESSION['idUser'], $contact);
 
-        $messagesarray = [];
+        $messagesArray = [];
 
         foreach ($messages as $message) {
-            $messagesarray[] = $message->toArray();
+            $messagesArray[] = $message->toArray();
         }
 
-        echo json_encode($messagesarray);
+        echo json_encode($messagesArray);
         exit;
     }
 
-    public function sendMessage(){
-
+    /**
+     * Get a message from the client and add it to database
+     * @return void
+     */
+    #[NoReturn]
+    public function sendMessage(): void
+    {
+        UserController::checkIfUserIsConnected();
         header('Content-Type: application/json');
 
         $message = $_POST['message'] ?? '';
         $receiver = $_POST['receiver'] ?? '';
 
-        // Ici, tu ferais l'insertion en base de données
-
-        if(!empty($message) && !empty($receiver)) {
+        if (!empty($message) && !empty($receiver)) {
             $chatManager = new ChatManager();
             $chatManager->addMessageToDB($message, $_SESSION['idUser'], $receiver);
+            $response = ['status' => $receiver, 'message' => $message];
 
-            echo json_encode(['status' => $receiver, 'message' => $message]);
-            exit;
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Champs manquants']);
-            exit;
-        }
+        } else
+            $response = ['status' => 'error', 'message' => 'Filed missing'];
 
+        echo json_encode($response);
+        exit;
     }
 
-    public function sendReadMark(){
-
-        $message = $_POST['message'] ?? '';
-        $receiver = $_POST['receiver'] ?? '';
-
-
-
-
-        if(!empty($message) && !empty($receiver)) {
-
-            $chatManager = new ChatManager();
-            $chatManager->updateReadMark($receiver);
-            echo json_encode(['status' => $receiver, 'message' => $message]);
-            exit();
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Champs manquants']);
-            exit();
-        }
-
-    }
-
+    /**
+     * Create a chat between 2 users
+     * @return void
+     */
     #[NoReturn]
-    public function getNewMessages(): void{
+    public function sendMessageToConUser(): void
+    {
+        UserController::checkIfUserIsConnected();
 
+        $contactId = Utils::request('ownerID');
+
+        $chatManager = new ChatManager();
+        if ($chatManager->checkIfChatExist($contactId, $_SESSION['idUser']))
+            Utils::redirect('chat');
+
+        $message = "Envoyer un nouveau message";
+
+        if (!empty($contactId)) {
+
+            $chatManager->addMessageToDB($message, $contactId, $_SESSION['idUser']);
+        }
+
+        Utils::redirect('chat');
+    }
+
+    /**
+     * Get a read mark from the client and update database
+     * @return void
+     */
+    #[NoReturn]
+    public function sendReadMark(): void
+    {
+        UserController::checkIfUserIsConnected();
+        $senderID = $_POST['senderId'] ?? '';
+
+        if (!empty($senderID)) {
+            $chatManager = new ChatManager();
+            $chatManager->updateReadMark((int)$senderID, $_SESSION['idUser']);
+            $response = ['senderID' => $senderID];
+        } else {
+            $response = ['status' => 'error', 'message' => 'Field missing'];
+        }
+
+        echo json_encode($response);
+        exit();
+
+    }
+
+    /**
+     * Send all message above the idMessage specified in the request to the client
+     * @return void
+     */
+    #[NoReturn]
+    public function getNewMessages(): void
+    {
+        UserController::checkIfUserIsConnected();
         $contact = Utils::request('id');
-        $idMessage =(int) Utils::request('idMsg');
+        $idMessage = (int)Utils::request('idMsg');
 
         $chatManager = new ChatManager();
         $messages = $chatManager->getUnreadMessages($_SESSION['idUser'], $contact, $idMessage);
 
-        $messagesarray = [];
+        $messagesArray = [];
 
-        foreach ($messages as $message) {
-            $messagesarray[] = $message->toArray();
-        }
+        if ($messagesArray != null || $messagesArray > 0) {
+            foreach ($messages as $message) {
+                $messagesArray[] = $message->toArray();
+            }
 
-        echo json_encode($messagesarray);
+            echo json_encode($messagesArray);
+            exit;
+        } else
+            echo json_encode([]);
         exit;
 
     }

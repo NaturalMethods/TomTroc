@@ -10,7 +10,7 @@
             <div class="accountinfosviewer flex-col centercol roundedcorner">
 
                 <div class=" flex-col ">
-                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" class="roundeduserimage">
+                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" alt="user image" class="roundeduserimage">
                     <form class="centertext" method="POST" action="index.php" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="uploadUserPic">
                         <input

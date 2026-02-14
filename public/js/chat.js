@@ -1,66 +1,127 @@
+const USER_IMG = "./public/img/users_images/"
+let contactList = document.getElementById('contactlist');
+let activeContactElement;
+let activeContact;
+let lastMessageId = 0;
 
-const USER_IMG ="./public/img/users_images/"
+const contactsMap = new Map();
 
 fetch('index.php?action=getSenderList')
     .then(res => res.json()) // transforme la chaîne JSON en objet JS
-    .then(chatlist=> {
+    .then(chatlist => {
 
-        addChatListArticles(chatlist)
-    });
-//TODO pollNewMessages pour tout les contacts et rajouter  les nouveaux contacts de msg
-pollNewMessages();
-
-
-function addChatListArticles(chatlist){
-
-    let contactlist = document.getElementById('contactlist');
+        addChatListArticles(chatlist);
+        pollNewMessages();
+    })
 
 
-    chatlist.forEach((chat,index) => {
-        // Créer l'article
-        let article = getContactArticleOfChatList(chat);
+/**
+ * Create each article for chat list on the left
+ * @param chatlist
+ */
+function addChatListArticles(chatlist) {
 
+    chatlist.forEach((chat, index) => {
 
-        // Ajouter à ton container
-        contactlist.appendChild(article);
-        if(index===0)
-            selectContactChat(article,chat);
+        if (!chat.userPic) chat.userPic = USER_IMG + "damiers.png";
+
+        let article = addOrUpdateContact(chat);
+
+        if (index === 0) selectContactChat(article, chat);
     });
 
     setSendMessageListener();
 }
 
-function getContactArticleOfChatList(chat){
-
+/**
+ * Create and return a contact article for chat list
+ * @param chat
+ * @returns {HTMLElement}
+ */
+function createContactArticle(chat) {
     const article = document.createElement('article');
     article.className = 'contactwrapper flex-col';
 
-    article.addEventListener('click', () => {
-        selectContactChat(article,chat)
-    });
-
-
-    if(chat.userPic.includes("damiers.png")) chat.userPic = "damiers.png"
-
     article.innerHTML = `
-        
-            <div class="contact flex-row">
-                <input type="hidden" id="userID" class="userID" value="${chat.userID}">
-                <img class="userroundedimg" src="${USER_IMG+chat.userPic}">
-                <div class="contacttext flex-col">
-                    <div class="contactheader flex-row">
-                        <span class="text contactusername">${chat.username}</span>
-                        <span class="text">${chat.sentAt}</span>
-                    </div>
-                    <p class="contactlastmsg lightgrey12pxtext">${chat.lastMessage}</p>
+        <div class="contact flex-row">
+            <img class="userroundedimg" src="${chat.userPic}" alt="user image">
+            <div class="contacttext flex-col">
+                <div class="contactheader flex-row">
+                    <span class="text contactusername">${chat.username}</span>
+                    <span class="text contactSentAt">${chat.sentAt}</span>
                 </div>
+                <p class="contactlastmsg lightgrey12pxtext">${chat.lastMessage}</p>
             </div>
+        </div>
     `;
-    return article;
 
+    article.refs = {
+        username: article.querySelector('.contactusername'),
+        lastMsg: article.querySelector('.contactlastmsg'),
+        sentAt: article.querySelector('.contactSentAt'),
+        img: article.querySelector('.userroundedimg')
+    };
+
+    article.addEventListener('click', () => selectContactChat(article, chat));
+
+    return article;
 }
 
-function selectContactChat(article,chat){
+/**
+ * Format date received from server H:i (ex: 15:05)
+ * @param date
+ * @returns {string}
+ */
+function formatDate(date) {
+
+    return new Date(date.replace(' ', 'T'))
+        .toLocaleTimeString('fr-FR', {
+            hour: '2-digit', minute: '2-digit', hour12: false
+        });
+}
+
+/**
+ * Add or Update a contact article with his infos in the chat list
+ * @param chat
+ * @returns {HTMLElement|any}
+ */
+function addOrUpdateContact(chat) {
+
+    if (contactsMap.has(chat.userID)) {
+
+        const article = contactsMap.get(chat.userID);
+        article.refs.username.textContent = chat.username;
+        article.refs.lastMsg.textContent = chat.lastMessage;
+        article.refs.sentAt.textContent = formatDate(chat.sentAt);
+
+        if (!chat.userPic) chat.userPic = "damiers.png";
+        article.refs.img.src = USER_IMG + (chat.userPic.includes("damiers.png") ? "damiers.png" : chat.userPic);
+
+        contactList.append(article);
+        return article;
+    } else {
+
+        const article = createContactArticle(chat);
+        contactList.append(article);
+        contactsMap.set(chat.userID, article);
+        return article;
+    }
+}
+
+/**
+ * Set global infos about the contact for which the chat is displayed
+ * @param chat
+ */
+function setNewActiveContact(chat) {
+    activeContact = chat;
+}
+
+/**
+ * Clear chat display et display the new selected contact's chat
+ * @param article
+ * @param chat
+ */
+function selectContactChat(article, chat) {
 
     let chatdiv = document.getElementById('chatdiv');
 
@@ -68,163 +129,189 @@ function selectContactChat(article,chat){
     setOldContactArticleInactive();
 
     clearChatDisplay();
-    fetchChatMessagesWithSenderID(chat['userID']);
 
+    setNewActiveContact(chat);
 
     setNewContactArticleActive(article);
-    sendReadMark();
-    addNewChatHeader(chatdiv,chat);
+
+    fetchChatMessagesWithSenderID(activeContact['userID']);
+
+    addNewChatHeader(chatdiv);
 }
 
-function setOldContactArticleInactive(){
+/**
+ * Remove active CSS class from elements
+ */
+function setOldContactArticleInactive() {
 
-    let oldArticle = document.querySelector('.activecontact');
-    if(oldArticle != null) {
+    let oldArticle = activeContactElement;
+    if (oldArticle != null) {
         oldArticle.classList.remove('activecontact');
         let img = oldArticle.querySelector('.userroundedimg.activeimg');
         img.classList.remove('activeimg');
     }
 }
-function setNewContactArticleActive(article){
+
+/**
+ * Add active CSS class on elements
+ * @param article
+ */
+function setNewContactArticleActive(article) {
+    activeContactElement = article;
     article.classList.add('activecontact');
     let img = article.querySelector('.userroundedimg');
     img.classList.add('activeimg');
 }
 
-function removeOldChatHeader(chatdiv){
+/**
+ * Remove chat header elements from the chat div
+ * @param chatdiv
+ */
+function removeOldChatHeader(chatdiv) {
     const oldChatHeader = chatdiv.querySelector(".chatheader")
-    if(oldChatHeader != null)
-        oldChatHeader.remove();
+    if (oldChatHeader != null) oldChatHeader.remove();
 }
 
-function addNewChatHeader(chatdiv,chat){
+/**
+ * Add chat header elements from the chat div
+ * @param chatdiv
+ */
+function addNewChatHeader(chatdiv) {
 
     const chatheader = document.createElement('div');
     chatheader.className = 'chatheader flex-row';
 
-    chatheader.innerHTML = `<img class="userroundedimg" src="${USER_IMG+chat['userPic']}"/>
-                      <span class="capital14blacktext">${chat['username']}</span>       `;
+    chatheader.innerHTML = `<img class="userroundedimg" src="${activeContact['userPic']}" alt="user image"/>
+                      <span class="capital14blacktext">${activeContact['username']}</span>       `;
 
     chatdiv.prepend(chatheader);
 }
 
-function fetchChatMessagesWithSenderID(senderID){
+/**
+ * Fetch all message between contact and user connected
+ * @param senderID
+ */
+function fetchChatMessagesWithSenderID(senderID) {
 
     fetch(`index.php?action=getMessages&id=${senderID}`)
         .then(res => res.json()) // transforme la chaîne JSON en objet JS
-        .then(messages=> {
+        .then(messages => {
             displayMessages(messages);
         });
 
 }
 
-function clearChatDisplay(){
-
-    let chatDisplay = document.getElementById("chatdisplay");
-    chatDisplay.innerHTML='';
+/**
+ * Remove all HTML elements from chat display
+ */
+function clearChatDisplay() {
+    document.getElementById("chatdisplay").innerHTML = '';
 }
 
-function displayMessages(messages){
+/**
+ * Display all messages in array in the chat display and send a read mark to server
+ * @param messages
+ */
+function displayMessages(messages) {
+    const messagesArray = [].concat(messages || []);
 
-    messages.forEach(message=>{
+    messagesArray.forEach(msg => {
+        addMsgToChatDisplay(msg);
 
-        addMessageToChatDisplay(message);
+        if (msg.idMessage > lastMessageId) lastMessageId = msg.idMessage;
 
     });
 
+    sendReadMark();
 }
 
-function addMessageToChatDisplay(message){
+/**
+ * Add a message to the chat display
+ * @param message
+ */
+function addMsgToChatDisplay(message) {
 
-    let contactlist = document.getElementById('contactlist');
-    let activeuserID = contactlist.querySelector('.activecontact').querySelector('.userID').value;
-    let contactimg = contactlist.querySelector('.userroundedimg.activeimg');
+    let msgBubble = createMessageBubble(message);
 
-    const msgbubble = document.createElement('div');
+    chatdisplay.prepend(msgBubble);
+    chatdisplay.scrollTop = 0;
+}
 
+/**
+ * Define which side of the chat the msg is displayed contact|user connected (left| right)
+ * @param msgBubble
+ * @param imgPath
+ */
+function setSenderSideBubble(msgBubble, imgPath) {
 
-    if(isMessageFromContact(activeuserID,message['idSender'].toString())) {
-        msgbubble.className = "msg flex-end flex-col";
-        msgbubble.innerHTML = `<div class="msgheader flex-row">
+    msgBubble.className = "msg flex-col";
+
+    let img = document.createElement("img");
+    img.className = "littleuserroundedimg";
+    img.src = imgPath;
+    img.alt="user image";
+    msgBubble.querySelector('.msgheader').prepend(img);
+    msgBubble.querySelector('.msgdate').className = "msgdate lightgrey12pxtext";
+
+}
+
+/**
+ * Create a bubble HTML element containing message to display
+ * @param message
+ * @returns {HTMLDivElement}
+ */
+function createMessageBubble(message) {
+
+    let contactimg = activeContactElement.querySelector('.userroundedimg.activeimg');
+
+    let msgbubble = document.createElement('div');
+
+    msgbubble.className = "msg flex-end flex-col";
+    msgbubble.innerHTML = `<div class="msgheader flex-row">
                                     <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
                                     <span class="msgdate textalignright  lightgrey12pxtext">${message["sentAt"]}</span>
                                 </div>
                                 <div class="msgbubble">
                                     <p class="msgcontent text12px" >${message["message"]}</p>
                                 </div>      `;
-    } else {
-        msgbubble.className = "msg flex-col";
 
-        msgbubble.innerHTML = `<div class="msgheader flex-row">
-                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
-                                    <img class="littleuserroundedimg" src="${contactimg.src}"/>
-                                    <span class="msgdate lightgrey12pxtext">${message["sentAt"]}</span>
-                                </div>
-                                <div class="msgbubble">
-                                    <p class="msgcontent text12px" >${message["message"]}</p>
-                                </div>      `;
-    }
+    console.log("conimg" + contactimg.src);
+    if (!isMessageFromContact(activeContact['userID'], message['idSender'])) setSenderSideBubble(msgbubble, contactimg.src);
 
-
-    chatdisplay.appendChild(msgbubble);
-    chatdisplay.scrollTop = 0;
+    return msgbubble;
 }
 
-function addNewMsgToDisplay(message){
+/**
+ * Return true if the message was sent by the contact
+ * @param activeuserID
+ * @param senderID
+ * @returns {boolean}
+ */
+function isMessageFromContact(activeuserID, senderID) {
 
-    let contactlist = document.getElementById('contactlist');
-    let activeuserID = contactlist.querySelector('.activecontact').querySelector('.userID').value;
-    let contactimg = contactlist.querySelector('.userroundedimg.activeimg');
-
-    const msgbubble = document.createElement('div');
-
-
-    if(isMessageFromContact(activeuserID,message['idSender'].toString())) {
-        msgbubble.className = "msg flex-end flex-col";
-        msgbubble.innerHTML = `<div class="msgheader flex-row">
-                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
-                                    <span class="msgdate textalignright  lightgrey12pxtext">${message["sentAt"]}</span>
-                                </div>
-                                <div class="msgbubble">
-                                    <p class="msgcontent text12px" >${message["message"]}</p>
-                                </div>      `;
-    } else {
-        msgbubble.className = "msg flex-col";
-
-        msgbubble.innerHTML = `<div class="msgheader flex-row">
-                                    <input type="hidden" id="idMsg" class="idMsg" value="${message.idMessage}">
-                                    <img class="littleuserroundedimg" src="${contactimg.src}"/>
-                                    <span class="msgdate lightgrey12pxtext">${message["sentAt"]}</span>
-                                </div>
-                                <div class="msgbubble">
-                                    <p class="msgcontent text12px" >${message["message"]}</p>
-                                </div>      `;
-    }
-
-
-    chatdisplay.prepend(msgbubble);
-    chatdisplay.scrollTop = 0;
-
-}
-
-function isMessageFromContact(activeuserID, senderID){
+    console.log("acc:" + activeuserID + " sneder:" + senderID);
 
     return activeuserID !== senderID;
-
 }
 
-function setSendMessageListener(){
+/**
+ * Add listener to the chat bar and send button to send message
+ */
+function setSendMessageListener() {
 
     document.querySelector('#sendBtn').addEventListener('click', () => {
-
-        const inputMessage = document.querySelector('#chatbar');
-        let receiverId = document.querySelector('.activecontact').querySelector('#userID').value;
-        sendMessageToServer(inputMessage.value, receiverId);
-        inputMessage.value = ''; // vider le champ
+        sendMessage();
+    });
+    document.querySelector('#chatbar').addEventListener('keydown', function (e) {
+        if (e.key === "Enter") sendMessage();
     });
 
 }
 
+/**
+ * Poll new messages from the serveur every 5 second
+ * @returns {Promise<void>}
+ */
 async function pollNewMessages() {
     try {
         await fetchNewMessages();
@@ -235,38 +322,61 @@ async function pollNewMessages() {
     }
 }
 
+/**
+ * Fetch new messages and chat list to update them
+ * @returns {Promise<void>}
+ */
 async function fetchNewMessages() {
     try {
-        if (document.querySelector('.activecontact') !== null) {
-            let contactId = document.querySelector('.activecontact').querySelector('#userID').value;
-            let msgId = document.querySelector('#chatdisplay').firstElementChild.querySelector('#idMsg').value;
+        const response = await fetch("index.php?action=newMessage&id=" + activeContact['userID'] + "&idMsg=" + lastMessageId);
+        let messages = await response.json();
+        filterAndDisplayNewMsg(messages);
 
-            console.log("IDMSG" + msgId);
-
-            const response = await fetch("index.php?action=newMessage&id=" + contactId + "&idMsg=" + msgId);
-            const messages = await response.json();
-
-            if (messages.length > 0) {
-                messages.forEach(msg => {
-                    console.log("res:" + msg['message']);
-
-                    if (msg['idMessage'] > msgId)
-                        addNewMsgToDisplay(msg); // fonction d'affichage
-                });
-            }
-        }
+        const response2 = await fetch('index.php?action=getSenderList&idMsg=' + lastMessageId);
+        let chats = await response2.json();
+        chats.forEach(chat => {
+            console.log(chat);
+            addOrUpdateContact(chat);
+        });
+    } catch (error) {
+        console.error("Erreur polling :", error);
     }
-    catch
-        (error)
-        {
-            console.error("Erreur polling :", error);
-        }
 
 }
 
+/**
+ * Filter to display only new messages send by the server
+ * @param messages
+ */
+function filterAndDisplayNewMsg(messages) {
+
+    const newMessages = [].concat(messages || [])
+        .filter(msg => msg.idMessage > lastMessageId);
+
+    if (newMessages.length) {
+        displayMessages(newMessages);
+    }
+}
+
+/**
+ * Send a message to the server with the contact id
+ */
+function sendMessage() {
+    const inputMessage = document.querySelector('#chatbar');
+    sendMessageToServer(inputMessage.value, activeContact['userID']);
+    inputMessage.value = '';
+}
+
+/**
+ * Send message and Fetch response to the server
+ * @param messageText
+ * @param receiverID
+ */
 function sendMessageToServer(messageText, receiverID) {
 
-    if(messageText > 0) {
+    console.log("message" + messageText.length);
+
+    if (messageText.length > 0) {
 
         // Crée les données à envoyer
         const data = new FormData();
@@ -275,8 +385,7 @@ function sendMessageToServer(messageText, receiverID) {
 
         // Appel fetch vers sendMessage.php
         fetch(`index.php?action=sendMessage&id=${receiverID}`, {
-            method: 'POST',
-            body: data
+            method: 'POST', body: data
         })
             .then(response => response.json()) // si PHP renvoie du JSON
             .then(result => {
@@ -290,19 +399,18 @@ function sendMessageToServer(messageText, receiverID) {
     }
 }
 
-function sendReadMark(){
-
-    let activeContact = document.getElementById('contactlist').querySelector('.activecontact').querySelector('.userID').value;
+/**
+ * Send read mark to the server
+ */
+function sendReadMark() {
 
     // Crée les données à envoyer
     const data = new FormData();
-    data.append('message', 'ReadMark');
-    data.append('receiver', activeContact);
+    data.append('senderId', activeContact['userID']);
 
     // Appel fetch vers sendMessage.php
-    fetch(`index.php?action=sendReadMark&id=${activeContact}`, {
-        method: 'POST',
-        body: data
+    fetch(`index.php?action=sendReadMark&id=${activeContact['userID']}`, {
+        method: 'POST', body: data
     })
         .then(response => response.json()) // si PHP renvoie du JSON
         .then(result => {

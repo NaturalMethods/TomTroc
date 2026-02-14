@@ -76,7 +76,7 @@
     <section class="ourbeliefs flex-col">
 
         <div class="ourbeliefsimg">
-            <img src="<?=IMG?>/ourbeliefs.png">
+            <img src="<?=IMG?>/ourbeliefs.png" alt="Woman in front of books">
         </div>
 
         <div class="ourbeliefstext flex-col">

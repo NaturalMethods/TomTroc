@@ -9,10 +9,11 @@
             <h1>Nos livres à l'échange</h1>
         </div>
         <div class="bookssearchwrapper">
-            <label for="bookssearchbar" hidden></label>
-            <form method="get" action="index.php">
-                <input type="hidden" name="action" value="books">
-                <input id="bookssearchbar" class="bookssearchbar lightgrey14pxtext" type="search" name="search" placeholder="Rechercher un livre" />
+            <label for="booksSearchBar" hidden>Seach Bar</label>
+            <form title="searchBar" method="get" action="index.php">
+                <label for="hiddenBooks" class="noDisplay">link to Books</label>
+                <input id="hiddenBooks" type="hidden" name="action" value="books">
+                <input id="booksSearchBar" class="bookssearchbar lightgrey14pxtext" type="search" name="search" placeholder="Rechercher un livre" />
             </form>
         </div>
 

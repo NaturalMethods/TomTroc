@@ -23,69 +23,48 @@ class ChatManager extends AbstractEntityManager
 
     }
 
-    /**
-     * Return an array of user object with all the distinct sender from
-     * messages send to a receiver
-     * @param int $idUser
-     * @return ?array
-     */
-    public function getSenderList(int $idUser): ?array
-    {
 
-        // On récupére les usernames des differentes expediteur
-        $sql = "SELECT DISTINCT
-                            u.idUser,
-                            u.username,
-                            u.mail,
-                            u.role,
-                            u.createdAt,
-                            u.userPic
-                FROM users u
-                JOIN messages m ON m.idSender = u.idUser
-                WHERE m.idReceiver = :receiverId
-                ORDER BY u.idUser;";
+    /**
+     * Get all conversations with their last message to send to client
+     * @param int $idUser
+     * @return array|null
+     */
+    public function getConversations(int $idUser): ?array
+    {
+        $sql = "SELECT
+                        u.idUser AS userID,
+                        u.username,
+                        u.userPic,
+                        m.message AS lastMessage,
+                        m.sentAt
+                FROM messages m
+                JOIN users u
+                ON (
+                        (u.idUser = m.idSender AND m.idReceiver = :receiverId)
+                        OR (u.idUser = m.idReceiver AND m.idSender = :receiverId)
+                   )
+                WHERE m.idMessage = (
+                    SELECT MAX(m2.idMessage)
+                    FROM messages m2
+                    WHERE (
+                            (m2.idSender = :receiverId AND m2.idReceiver = u.idUser)
+                            OR (m2.idSender = u.idUser AND m2.idReceiver = :receiverId)
+                          )
+                    )
+                ORDER BY m.idMessage DESC;";
 
         $result = $this->db->query($sql, ['receiverId' => $idUser]);
-        $users = [];
-
-        while ($user = $result->fetch()) {
-            $users[] = new User($user);
-        }
-        return $users;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
     /**
-     * Return a message object containing the last message send between 2 users
-     * @param int $idReceiver
-     * @param int $idSender
-     * @return Message|null
+     * Return all messages between a sender and a receiver
+     * @param int $idUser
+     * @param int $contactId
+     * @return array|null
      */
-    public function getLastMessage(int $idReceiver, int $idSender): ?Message
-    {
-
-        // On récupére les usernames des differentes expediteur
-        $sql = "SELECT
-                        m.*
-                FROM messages m
-                WHERE
-                     (m.idSender = :senderId   AND m.idReceiver = :receiverId)
-                OR   (m.idSender = :receiverId AND m.idReceiver = :senderId)
-                ORDER BY m.sentAt DESC
-                LIMIT 1;
-                ";
-
-        $result = $this->db->query($sql, ['receiverId' => $idReceiver, 'senderId' => $idSender]);
-        $message = $result->fetch();
-        if ($message) {
-            return new Message($message);
-        }
-        return null;
-
-
-    }
-
-    public function getMessages(int $idUser, int $contactId): ?Array
+    public function getMessages(int $idUser, int $contactId): ?array
     {
 
         $sql = "SELECT
@@ -94,7 +73,7 @@ class ChatManager extends AbstractEntityManager
                 WHERE
                      (m.idSender = :idSender   AND m.idReceiver = :idReceiver)
                 OR   (m.idSender = :idReceiver AND m.idReceiver = :idSender)
-                ORDER BY m.sentAt DESC;
+                ORDER BY m.sentAt;
                 ";
         $result = $this->db->query($sql, ['idReceiver' => $idUser, 'idSender' => $contactId]);
         $messages = [];
@@ -105,7 +84,15 @@ class ChatManager extends AbstractEntityManager
         return $messages;
     }
 
-    public function getUnreadMessages(int $idUser, int $contactId, int $idMessage): ?Array{
+    /**
+     * Return all messages with message id greater than the message id specified
+     * @param int $idUser
+     * @param int $contactId
+     * @param int $idMessage
+     * @return array|null
+     */
+    public function getUnreadMessages(int $idUser, int $contactId, int $idMessage): ?array
+    {
 
         $sql = "SELECT
                         m.*
@@ -126,14 +113,29 @@ class ChatManager extends AbstractEntityManager
 
     }
 
-    public function updateReadMark(int $idSender): void{
+    /**
+     * Update the read mark of a message to set to 0
+     * @param int $idSender
+     * @param int $idReceiver
+     * @return void
+     */
+    public function updateReadMark(int $idSender, int $idReceiver): void
+    {
 
-        $sql = "UPDATE messages set unread = 0 WHERE idSender = :idSender ; ";
-        $result = $this->db->query($sql, ['idSender' => $idSender]);
+        $sql = "UPDATE messages set unread = 0 WHERE idSender = :idSender and idReceiver = :idReceiver ; ";
+        $result = $this->db->query($sql, ['idSender' => $idSender, 'idReceiver' => $idReceiver]);
         $result->fetch();
     }
 
-    public function addMessageToDB($message, $idSender, $idReceiver): ?int{
+    /**
+     * Add a message to the database
+     * @param $message
+     * @param $idSender
+     * @param $idReceiver
+     * @return void
+     */
+    public function addMessageToDB($message, $idSender, $idReceiver): void
+    {
 
         $sql = "INSERT INTO messages (message,idSender,idReceiver) VALUES (:message, :idSender, :idReceiver);";
         $params = [
@@ -142,9 +144,33 @@ class ChatManager extends AbstractEntityManager
             'idReceiver' => $idReceiver,
         ];
 
-        //TODO créer une fonction qui gere les retours SQL pour les select, insert, update...)
+        //TODO créé une fonction qui gere les retours SQL pour les select, insert, update...)
+        $this->db->query($sql, $params);
+    }
+
+    /**
+     * Return true if a chat exist between two users
+     * @param $senderID
+     * @param $receiverID
+     * @return bool
+     */
+    public function checkIfChatExist($senderID, $receiverID): bool{
+
+        $sql = "SELECT 1
+                FROM messages
+                WHERE 
+                    (idSender = :user1 AND idReceiver = :user2)
+                OR  (idSender = :user2 AND idReceiver = :user1)
+                LIMIT 1;" ;
+
+        $params = [
+            'user1' => $senderID,
+            'user2' => $receiverID
+        ];
         $result = $this->db->query($sql, $params);
-        return $this->db->getPDO()->lastInsertId();
+
+        return (bool)$result->fetch(PDO::FETCH_ASSOC);
+
     }
 
 }

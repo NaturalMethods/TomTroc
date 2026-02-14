@@ -26,14 +26,15 @@
         <a href="index.php?action=account&id=<?= $book->getIdOwner(); ?>">
             <div class="bookowner flex-row">
 
-                <img class="userroundedimg" src="<?= USERS_IMAGES.$userPic ?>">
+                <img class="userroundedimg" src="<?= USERS_IMAGES.$userPic ?>" alt="user image">
                 <p class="ownerusername"><?= $book->getOwner(); ?></p>
 
 
             </div>
         </a>
         <form action="index.php" method="get">
-            <button type="submit" name="action" value="books" class="msgbutton greenButton">Envoyer un message</button>
+            <input type="hidden" name="ownerID" value="<?= $book->getIdOwner(); ?>">
+            <button type="submit" name="action" value="addContact" class="msgbutton greenButton">Envoyer un message</button>
         </form>
     </div>
 

@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 
 /**
  *  Class controller about book page and book
@@ -52,14 +54,14 @@ class BookController
         $bookManager = new BookManager();
         $book = $bookManager->getBookByID($id);
 
+        if (!$book)
+            Utils::redirect("books");
+
         $userManager = new UserManager();
         $userPic = $userManager->getUserPicById($book->getIdOwner());
 
         if (!$userPic || !file_exists(USERS_IMAGES . $userPic))
             $userPic = "damiers.png";
-
-        if (!$book)
-            Utils::redirect("books");
 
         $view = new View();
         $view->render("detailbook", ['book' => $book, 'userPic' => $userPic], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
@@ -67,7 +69,7 @@ class BookController
 
     /**
      * Check if the owner is the connected user
-     * if no redirect to myaccount page
+     * if no redirect to my account page
      * @param $idBook
      * @return void
      */
@@ -106,10 +108,11 @@ class BookController
     }
 
     /**
-     * Function called from the editbook page
+     * Function called from the edit book page
      * Change information about a book if connected user is owner
      * @return void
      */
+    #[NoReturn]
     public function changeBookInfos(): void
     {
 
@@ -145,9 +148,10 @@ class BookController
     }
 
     /**
-     * Delete after confirmation a book from the "myaccount" page
+     * Delete after confirmation a book from the "my account" page
      * @return void
      */
+    #[NoReturn]
     public function deleteBook(): void
     {
 
