@@ -275,7 +275,6 @@ function createMessageBubble(message) {
                                     <p class="msgcontent text12px" >${message["message"]}</p>
                                 </div>      `;
 
-    console.log("conimg" + contactimg.src);
     if (!isMessageFromContact(activeContact['userID'], message['idSender'])) setSenderSideBubble(msgbubble, contactimg.src);
 
     return msgbubble;

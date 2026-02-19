@@ -13,6 +13,8 @@
 
         <div id="chatdisplay" class="chatdisplay ">
 
+
+
         </div>
         <div class="chatbox flex-row">
             <label for="sendBtn" hidden >Chat bar</label>
