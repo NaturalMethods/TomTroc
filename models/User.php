@@ -129,6 +129,33 @@ class User extends AbstractEntity
     }
 
     /**
+     * Return a string corresponding to the age of the account in years/month/day
+     * @param string $createdAt
+     * @return string
+     * @throws Exception
+     */
+    public function memberDuration(): string
+    {
+        $created = new DateTime($this->getCreatedAt());
+        $now = new DateTime();
+        $diff = $created->diff($now);
+
+        if ($diff->y >= 1) {
+            return $diff->y . ' an' . ($diff->y > 1 ? 's' : '');
+        }
+
+        if ($diff->m >= 1) {
+            return $diff->m . ' mois';
+        }
+
+        if ($diff->d >= 1) {
+            return $diff->d . ' jour' . ($diff->d > 1 ? 's' : '');
+        }
+
+        return 'aujourd’hui';
+    }
+
+    /**
      * Return the path of user image
      * @return string|null
      */

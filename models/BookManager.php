@@ -109,7 +109,7 @@ class BookManager extends AbstractEntityManager
      */
     public function getBookOwnerID($idBook): int
     {
-
+        error_log("idbook:".$idBook);
         $sql = "SELECT idOwner from books where idBook = :idBook;";
         $result = $this->db->query($sql, ['idBook' => $idBook]);
         $ownerID = $result->fetch();
@@ -117,6 +117,19 @@ class BookManager extends AbstractEntityManager
         return $ownerID["idOwner"];
 
     }
+    public function setBookPicById(int $idBook, string $name): ?bool
+    {
+        $sql = "UPDATE books SET bookImg = :name WHERE idBook = :idBook ;";
+        $params = [':idBook' => $idBook,
+            ':name' => $name];
+
+        $result = $this->db->query($sql, $params);
+
+        if ($result->rowCount())
+            return true;
+        else return false;
+    }
+
 
     /**
      * Update datas about a book

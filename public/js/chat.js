@@ -23,7 +23,7 @@ function addChatListArticles(chatlist) {
 
     chatlist.forEach((chat, index) => {
 
-        if (!chat.userPic) chat.userPic = USER_IMG + "damiers.png";
+        if (!chat.userPic) chat.userPic =  "damiers.png";
 
         let article = addOrUpdateContact(chat);
 
@@ -114,6 +114,9 @@ function addOrUpdateContact(chat) {
  */
 function setNewActiveContact(chat) {
     activeContact = chat;
+    if (activeContact.userPic && !activeContact.userPic.startsWith(USER_IMG)) {
+        activeContact.userPic = USER_IMG + activeContact.userPic;
+    }
 }
 
 /**
@@ -180,6 +183,7 @@ function addNewChatHeader(chatdiv) {
 
     const chatheader = document.createElement('div');
     chatheader.className = 'chatheader flex-row';
+
 
     chatheader.innerHTML = `<img class="userroundedimg" src="${activeContact['userPic']}" alt="user image"/>
                       <span class="capital14blacktext">${activeContact['username']}</span>       `;
@@ -262,8 +266,6 @@ function setSenderSideBubble(msgBubble, imgPath) {
  */
 function createMessageBubble(message) {
 
-    let contactimg = activeContactElement.querySelector('.userroundedimg.activeimg');
-
     let msgbubble = document.createElement('div');
 
     msgbubble.className = "msg flex-end flex-col";
@@ -275,7 +277,7 @@ function createMessageBubble(message) {
                                     <p class="msgcontent text12px" >${message["message"]}</p>
                                 </div>      `;
 
-    if (!isMessageFromContact(activeContact['userID'], message['idSender'])) setSenderSideBubble(msgbubble, contactimg.src);
+    if (!isMessageFromContact(activeContact['userID'], message['idSender'])) setSenderSideBubble(msgbubble, activeContact['userPic']);
 
     return msgbubble;
 }
@@ -287,9 +289,6 @@ function createMessageBubble(message) {
  * @returns {boolean}
  */
 function isMessageFromContact(activeuserID, senderID) {
-
-    console.log("acc:" + activeuserID + " sneder:" + senderID);
-
     return activeuserID !== senderID;
 }
 
@@ -302,6 +301,7 @@ function setSendMessageListener() {
         sendMessage();
     });
     document.querySelector('#chatbar').addEventListener('keydown', function (e) {
+
         if (e.key === "Enter") sendMessage();
     });
 
@@ -331,10 +331,12 @@ async function fetchNewMessages() {
         let messages = await response.json();
         filterAndDisplayNewMsg(messages);
 
+        console.log("lastID:"+lastMessageId);
+
         const response2 = await fetch('index.php?action=getSenderList&idMsg=' + lastMessageId);
         let chats = await response2.json();
         chats.forEach(chat => {
-            console.log(chat);
+            //console.log(chat);
             addOrUpdateContact(chat);
         });
     } catch (error) {
@@ -372,8 +374,6 @@ function sendMessage() {
  * @param receiverID
  */
 function sendMessageToServer(messageText, receiverID) {
-
-    console.log("message" + messageText.length);
 
     if (messageText.length > 0) {
 
@@ -413,7 +413,7 @@ function sendReadMark() {
     })
         .then(response => response.json()) // si PHP renvoie du JSON
         .then(result => {
-            console.log('Message envoyé:', result);
+            console.log('ReadMark Sent:', result);
             // Ici tu peux mettre à jour l'UI, vider le champ input, etc.
         })
         .catch(error => {

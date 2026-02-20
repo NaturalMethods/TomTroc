@@ -25,8 +25,7 @@ class ChatController
      */
     public function showChat(): void
     {
-
-        UserController::checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
         $view = new View();
         $view->render("chat", [], ['unreadMSG' => $this->getUnreadMessagesCount()]);
@@ -40,7 +39,7 @@ class ChatController
     #[NoReturn]
     public function getConversations(): void
     {
-        UserController::checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
         //TODO Réaliser un lastMessageID Global
 
         $chatManager = new ChatManager();
@@ -58,9 +57,9 @@ class ChatController
     public function getMessages(): void
     {
 
-        UserController::checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
-        $contact = Utils::request('id');
+        $contact = htmlspecialchars(Utils::request('id'));
         //TODO check ID du contact
         $chatManager = new ChatManager();
         $messages = $chatManager->getMessages($_SESSION['idUser'], $contact);
@@ -82,11 +81,11 @@ class ChatController
     #[NoReturn]
     public function sendMessage(): void
     {
-        UserController::checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
         header('Content-Type: application/json');
 
-        $message = $_POST['message'] ?? '';
-        $receiver = $_POST['receiver'] ?? '';
+        $message = htmlspecialchars(Utils::request('message') ?? '');
+        $receiver = htmlspecialchars(Utils::request('receiver') ?? '');
 
         if (!empty($message) && !empty($receiver)) {
             $chatManager = new ChatManager();
@@ -107,9 +106,9 @@ class ChatController
     #[NoReturn]
     public function sendMessageToConUser(): void
     {
-        UserController::checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
-        $contactId = Utils::request('ownerID');
+        $contactId = htmlspecialchars(Utils::request('ownerID'));
 
         $chatManager = new ChatManager();
         if ($chatManager->checkIfChatExist($contactId, $_SESSION['idUser']))
@@ -132,8 +131,8 @@ class ChatController
     #[NoReturn]
     public function sendReadMark(): void
     {
-        UserController::checkIfUserIsConnected();
-        $senderID = $_POST['senderId'] ?? '';
+        Utils::checkIfUserIsConnected();
+        $senderID = htmlspecialchars(Utils::request('senderId') ?? '');
 
         if (!empty($senderID)) {
             $chatManager = new ChatManager();
@@ -155,17 +154,18 @@ class ChatController
     #[NoReturn]
     public function getNewMessages(): void
     {
-        UserController::checkIfUserIsConnected();
-        $contact = Utils::request('id');
-        $idMessage = (int)Utils::request('idMsg');
+        Utils::checkIfUserIsConnected();
+        $contact = htmlspecialchars(Utils::request('id'));
+        $idMessage = (int)htmlspecialchars(Utils::request('idMsg'));
 
         $chatManager = new ChatManager();
         $messages = $chatManager->getUnreadMessages($_SESSION['idUser'], $contact, $idMessage);
 
         $messagesArray = [];
 
-        if ($messagesArray != null || $messagesArray > 0) {
+        if (!empty($messages)) {
             foreach ($messages as $message) {
+
                 $messagesArray[] = $message->toArray();
             }
 

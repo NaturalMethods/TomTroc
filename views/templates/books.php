@@ -11,9 +11,8 @@
         <div class="bookssearchwrapper">
             <label for="booksSearchBar" hidden>Seach Bar</label>
             <form title="searchBar" method="get" action="index.php">
-                <label for="hiddenBooks" class="noDisplay">link to Books</label>
                 <input id="hiddenBooks" type="hidden" name="action" value="books">
-                <input id="booksSearchBar" class="bookssearchbar lightgrey14pxtext" type="search" name="search" placeholder="Rechercher un livre" />
+                <input id="booksSearchBar" class="bookssearchbar lightgrey14pxtext" type="search" name="search" placeholder="Rechercher un livre">
             </form>
         </div>
 

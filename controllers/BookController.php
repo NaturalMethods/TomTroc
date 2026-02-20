@@ -28,7 +28,7 @@ class BookController
      */
     public function showBooks(): void
     {
-        $search = Utils::request("search");
+        $search = htmlspecialchars(Utils::request("search"));
 
         $bookManager = new BookManager();
 
@@ -49,7 +49,7 @@ class BookController
     public function showDetailBook(): void
     {
 
-        $id = Utils::request("id", -1);
+        $id = htmlspecialchars(Utils::request("id", -1));
 
         $bookManager = new BookManager();
         $book = $bookManager->getBookByID($id);
@@ -75,14 +75,11 @@ class BookController
      */
     public function checkIfIsBookOwner($idBook): void
     {
-
         $bookManager = new BookManager();
         $ownerID = $bookManager->getBookOwnerID($idBook);
 
-        if ($_SESSION['idUser'] != $ownerID) {
+        if ($_SESSION['idUser'] != $ownerID)
             Utils::redirect("myaccount");
-        }
-
     }
 
     /**
@@ -91,17 +88,14 @@ class BookController
      */
     public function showEditBook(): void
     {
-        //TODO Vérifier que l'utilisateur connecté est le propriétaire du livre
-        //TODO faire un chemin dans le config pour les CSS
+        Utils::checkIfUserIsConnected();
 
-        UserController::checkIfUserIsConnected();
-
-        $bookId = Utils::request("id", -1);
+        $bookId = htmlspecialchars(Utils::request("id", -1));
 
         $this->checkIfIsBookOwner($bookId);
 
         $bookManager = new BookManager();
-        $book = $bookManager->getBookByID(Utils::request("id", -1));
+        $book = $bookManager->getBookByID($bookId);
 
         $view = new View();
         $view->render("editbook", ['book' => $book], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
@@ -115,19 +109,18 @@ class BookController
     #[NoReturn]
     public function changeBookInfos(): void
     {
+        Utils::checkIfUserIsConnected();
 
-        UserController::checkIfUserIsConnected();
-
-        $bookId = Utils::request("bookId");
+        $bookId = htmlspecialchars(Utils::request("bookId"));
         $this->checkIfIsBookOwner($bookId);
 
         $bookManager = new BookManager();
         $currentBook = $bookManager->getBookByID($bookId);
 
-        $bookTitle = Utils::request("bookTitle", $currentBook->getTitle());
-        $bookAuthor = Utils::request("bookAuthor", $currentBook->getAuthor());
-        $bookDescription = Utils::request("bookCommentary", $currentBook->getDescription());
-        $bookDisponibility = Utils::request("bookDisponibility", $currentBook->getDisponibility());
+        $bookTitle = htmlspecialchars(Utils::request("bookTitle", $currentBook->getTitle()));
+        $bookAuthor = htmlspecialchars(Utils::request("bookAuthor", $currentBook->getAuthor()));
+        $bookDescription = htmlspecialchars(Utils::request("bookCommentary", $currentBook->getDescription()));
+        $bookDisponibility = htmlspecialchars(Utils::request("bookDisponibility", $currentBook->getDisponibility()));
 
         $book = [
             'idBook' => $bookId,
@@ -155,15 +148,50 @@ class BookController
     public function deleteBook(): void
     {
 
-        UserController::checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
-        $bookId = Utils::request("id");
+        $bookId = htmlspecialchars(Utils::request("id"));
         $this->checkIfIsBookOwner($bookId);
 
         $bookManager = new BookManager();
         $bookManager->deleteBook($bookId);
 
         Utils::redirect("myaccount");
+
+    }
+
+    /**
+     * Function called to upload a book image from "editbook" page
+     * @return void
+     */
+    #[NoReturn]
+    public function uploadBookPic(): void
+    {
+
+        Utils::checkIfUserIsConnected();
+
+        $bookId = htmlspecialchars(Utils::request("bookId"));
+
+        $this->checkIfIsBookOwner($bookId);
+
+        $location = "editbook&id=" . $bookId;
+
+        $bookManager = new BookManager();
+        $book = $bookManager->getBookByID($bookId);
+        $bookOldPic = $book->getBookImg();
+
+        $name = Utils::savePicToDir($location, BOOKS_IMAGES);
+        $bookNewPic = BOOKS_IMAGES . $name;
+
+        if (file_exists($bookNewPic)) {
+            if ($bookManager->setBookPicById($bookId, $name)) {
+                Utils::deleteOldPic(BOOKS_IMAGES . $bookOldPic);
+            } else {
+                unlink($bookNewPic);
+                Utils::redirect($location, ['error' => 'uploadError']);
+            }
+        }
+        Utils::redirect($location);
 
     }
 

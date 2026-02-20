@@ -93,6 +93,7 @@ class ChatManager extends AbstractEntityManager
      */
     public function getUnreadMessages(int $idUser, int $contactId, int $idMessage): ?array
     {
+        error_log("lastId envoyé = " . $idMessage);
 
         $sql = "SELECT
                         m.*

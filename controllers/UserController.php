@@ -7,18 +7,6 @@ use JetBrains\PhpStorm\NoReturn;
  */
 class UserController
 {
-
-    /**
-     * Check if user is connected, if not redirect to connect page
-     * @return void
-     */
-    public static function checkIfUserIsConnected(): void
-    {
-        if (!isset($_SESSION['idUser'])) {
-            Utils::redirect("connect");
-        }
-    }
-
     /**
      * Check if user is not connected, if he is redirects to "myaccount" page
      * @return void
@@ -87,7 +75,6 @@ class UserController
      */
     private function checkUserInfos(string $location, string $username, string $mail, string $password): void
     {
-
         if (empty($username) || empty($mail) || empty($password))
             Utils::redirect($location, ['error' => 'emptyFields']);
 
@@ -96,76 +83,6 @@ class UserController
 
         if ($this->checkIfEmailExists($mail))
             Utils::redirect($location, ['error' => 'emailExists']);
-
-    }
-
-
-    /**
-     * Check the upload image from the user
-     * @param string $location
-     * @return void
-     */
-    private function checkUploadedPic(string $location): void
-    {
-        $this->checkIfPicUploadedRight($location);
-        $this->checkPicSize($location);
-    }
-
-    /**
-     * Check if the img is uploaded on the server or redirect to location with error message
-     * @param string $location
-     * @return void
-     */
-    private function checkIfPicUploadedRight(string $location): void
-    {
-        if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
-            Utils::redirect($location, ['error' => 'picNotUploaded']);
-        }
-
-    }
-
-    /**
-     * Check image size and redirect to location with error message if too big
-     * @param string $location
-     * @return void
-     */
-    private function checkPicSize(string $location): void
-    {
-
-        $maxSize = 8 * 1024 * 1024; // 8 Mo
-
-        if ($_FILES['image']['size'] > $maxSize) {
-            Utils::redirect($location, ['error' => 'picTooBig']);
-        }
-
-    }
-
-    /**
-     * Check image type and redirect to location with error message if invalid
-     * @param string $location
-     * @return string|null
-     */
-    private function checkPicType(string $location): ?string
-    {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = finfo_file($finfo, $_FILES['image']['tmp_name']);
-
-        $allowed = [
-            'image/jpeg',
-            'image/png',
-            'image/webp'
-        ];
-
-        if (!in_array($mime, $allowed, true)) {
-            Utils::redirect($location, ['error' => 'invalidFile']);
-        }
-
-        return match ($mime) {
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/webp' => 'webp',
-            default => null
-        };
 
     }
 
@@ -202,24 +119,20 @@ class UserController
      */
     private function checkPassword(User $user, string $password): void
     {
-
-        if (!password_verify($password, $user->getPassword())) {
+        if (!password_verify($password, $user->getPassword()))
             Utils::redirect("connect", ['error' => 'wrongIDs']);
-        }
-
     }
 
     /**
      * Connect a user by checking email and password or redirect with error message if invalid
      * @return void
      */
+    #[NoReturn]
     public function connectUser(): void
     {
         // On récupère les données du formulaire.
-        $mail = Utils::request("userMail");
-        $password = Utils::request("userPassword");
-
-        //TODO Gérer les cas ou l'utilisateur n'existe pas
+        $mail = htmlspecialchars(Utils::request("userMail"));
+        $password = htmlspecialchars(Utils::request("userPassword"));
 
         // On vérifie que l'utilisateur existe.
         $userManager = new UserManager();
@@ -255,41 +168,13 @@ class UserController
     }
 
     /**
-     * Return a string corresponding to the age of the account in years/month/day
-     * @param string $createdAt
-     * @return string
-     * @throws Exception
-     */
-    function memberDuration(string $createdAt): string
-    {
-        $created = new DateTime($createdAt);
-        $now = new DateTime();
-        $diff = $created->diff($now);
-
-        if ($diff->y >= 1) {
-            return $diff->y . ' an' . ($diff->y > 1 ? 's' : '');
-        }
-
-        if ($diff->m >= 1) {
-            return $diff->m . ' mois';
-        }
-
-        if ($diff->d >= 1) {
-            return $diff->d . ' jour' . ($diff->d > 1 ? 's' : '');
-        }
-
-        return 'aujourd’hui';
-    }
-
-
-    /**
      * Function called to display the "myaccount" page if user is connected
      * @return void
      * @throws Exception
      */
     public function showMyAccount(): void
     {
-        $this->checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
         $id = $_SESSION['idUser'];
 
@@ -298,19 +183,16 @@ class UserController
         $userManager = new UserManager();
         $user = $userManager->getUserByID($id);
 
+        if (!$user)
+            throw new Exception("L'utilisateur n'existe pas.");
 
         $bookManager = new BookManager();
         $books = $bookManager->getUserBooks($user->getIdUser());
 
-        //TODO faire le bouton éditer et supprimer de la liste des livres
-        // TODO Voir si vraiment utile
-        if (!$user)
-            throw new Exception("L'utilisateur n'existe pas.");
-
         if (!$user->getUserPic() || !file_exists(USERS_IMAGES . $user->getUserPic()))
             $user->setUserPic("damiers.png");
 
-        $memberAge = $this->memberDuration($user->getCreatedAt());
+        $memberAge = $user->memberDuration();
 
         $view = new View();
         $view->render("account", ['user' => $user, 'books' => $books, 'memberAge' => $memberAge, 'errorMessage' => $errorMessage], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
@@ -324,21 +206,22 @@ class UserController
     public function showPublicAccount(): void
     {
 
-        $id = Utils::request("id");
+        $id = htmlspecialchars(Utils::request("id"));
 
         $userManager = new UserManager();
         $user = $userManager->getUserByID($id);
 
+        if (!$user)
+            Utils::redirect("home");
+
         $bookManager = new BookManager();
         $books = $bookManager->getUserBooks($user->getIdUser());
 
-        if (!$user)
-            throw new Exception("L'utilisateur n'existe pas.");
-
+        // TODO définir sur damiers dans UserManager ?
         if (!$user->getUserPic())
             $user->setUserPic("damiers.png");
 
-        $memberAge = $this->memberDuration($user->getCreatedAt());
+        $memberAge = $user->memberDuration();
 
         $view = new View();
         $view->render("publicaccount", ['user' => $user, 'memberAge' => $memberAge, 'books' => $books], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
@@ -380,13 +263,15 @@ class UserController
      * Check and change infos of user from the form in "myaccount" page
      * @return void
      */
+    #[NoReturn]
     public function changeUserInfos(): void
     {
-        //TODO vérifier que l'utilisateur est connecté
-        $userId = Utils::request("id", -1);
-        $username = Utils::request("username", -1);
-        $password = Utils::request("userPassword", -1);
-        $mail = Utils::request("userMail", -1);
+        Utils::checkIfUserIsConnected();
+
+        $userId = htmlspecialchars(Utils::request("id", -1));
+        $username = htmlspecialchars(Utils::request("username", -1));
+        $password = htmlspecialchars(Utils::request("userPassword", -1));
+        $mail = htmlspecialchars(Utils::request("userMail", -1));
 
         $this->checkChangeInUserInfos("myaccount", $username, $mail, $password);
 
@@ -400,75 +285,31 @@ class UserController
      * Function called to upload a user image from myaccount page
      * @return void
      */
+    #[NoReturn]
     public function uploadUserPic(): void
     {
-        $this->checkIfUserIsConnected();
-
-        $this->checkUploadedPic("myaccount");
-        $extension = $this->checkPicType("myaccount");
+        Utils::checkIfUserIsConnected();
 
         $idUser = $_SESSION["idUser"];
+        $location = "myaccount";
+
         $userManager = new UserManager();
         $user = $userManager->getUserByID($idUser);
         $userOldPic = $user->getUserPic();
 
-        $tmp = $_FILES['image']['tmp_name'];
-        $name = uniqid() . "." . $extension;
+        $name = Utils::savePicToDir($location, USERS_IMAGES);
         $userNewPic = USERS_IMAGES . $name;
 
 
-        move_uploaded_file($tmp, $userNewPic);
-
         if (file_exists($userNewPic)) {
             if ($userManager->setUserPicById($idUser, $name)) {
-                if (!empty($userOldPic) && file_exists(USERS_IMAGES . $userOldPic)) {
-                    unlink(USERS_IMAGES . $userOldPic);
-                }
+                Utils::deleteOldPic(USERS_IMAGES . $userOldPic);
             } else {
                 unlink($userNewPic);
-                Utils::redirect("myaccount", ['error' => 'uploadError']);
+                Utils::redirect($location, ['error' => 'uploadError']);
             }
         }
-        Utils::redirect("myaccount");
-    }
-
-    /**
-     * Function called to upload a book image from "editbook" page
-     * @return void
-     */
-    public function uploadBookPic(): void {
-
-        $this->checkIfUserIsConnected();
-
-        //TODO utilisateur = owner ?
-
-        $bookId = Utils::request("bookId");
-
-        $this->checkUploadedPic("editbook");
-        $extension = $this->checkPicType("editbook");
-
-        $bookManager = new BookManager();
-        $book = $bookManager->getBookByID($bookId);
-        $bookOldPic = $book->getBookImg();
-
-        $tmp = $_FILES['image']['tmp_name'];
-        $name = uniqid() . "." . $extension;
-        $bookNewPic = BOOKS_IMAGES . $name;
-
-        move_uploaded_file($tmp, $bookNewPic);
-
-        if (file_exists($bookNewPic)) {
-            if ($bookManager->setBookPicById($bookId, $name)) {
-                if (!empty($bookOldPic) && file_exists(BOOKS_IMAGES . $bookOldPic)) {
-                    unlink(USERS_IMAGES . $bookOldPic);
-                }
-            } else {
-                unlink($bookNewPic);
-                Utils::redirect("editbook", ['error' => 'uploadError']);
-            }
-        }
-        Utils::redirect("editbook");
-
+        Utils::redirect($location);
     }
 
     /**
@@ -477,9 +318,9 @@ class UserController
      */
     public function registerUserInfos(): void
     {
-        $username = Utils::request("username", -1);
-        $password = Utils::request("userPassword", -1);
-        $mail = Utils::request("userMail", -1);
+        $username = htmlspecialchars(Utils::request("username", -1));
+        $password = htmlspecialchars(Utils::request("userPassword", -1));
+        $mail = htmlspecialchars(Utils::request("userMail", -1));
 
         $this->checkUserInfos("register", $username, $mail, $password);
 
@@ -488,7 +329,6 @@ class UserController
 
         if ($userId) {
             $this->connectUser();
-            Utils::redirect("myaccount");
         }
     }
 
