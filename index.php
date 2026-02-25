@@ -127,10 +127,15 @@ try {
             $chatController->sendMessageToConUser();
             break;
 
+        case '404':
+            $bookController = new BookController();
+            $bookController->show404();
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }
 
 } catch (Exception $e) {
-    Utils::redirect("home");
+    Utils::redirect("404");
 }

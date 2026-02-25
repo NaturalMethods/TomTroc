@@ -23,7 +23,7 @@ function addChatListArticles(chatlist) {
 
     chatlist.forEach((chat, index) => {
 
-        if (!chat.userPic) chat.userPic =  "damiers.png";
+        if (!chat.userPic) chat.userPic = "damiers.png";
 
         let article = addOrUpdateContact(chat);
 
@@ -253,7 +253,7 @@ function setSenderSideBubble(msgBubble, imgPath) {
     let img = document.createElement("img");
     img.className = "littleuserroundedimg";
     img.src = imgPath;
-    img.alt="user image";
+    img.alt = "user image";
     msgBubble.querySelector('.msgheader').prepend(img);
     msgBubble.querySelector('.msgdate').className = "msgdate lightgrey12pxtext";
 
@@ -331,7 +331,7 @@ async function fetchNewMessages() {
         let messages = await response.json();
         filterAndDisplayNewMsg(messages);
 
-        console.log("lastID:"+lastMessageId);
+        console.log("lastID:" + lastMessageId);
 
         const response2 = await fetch('index.php?action=getSenderList&idMsg=' + lastMessageId);
         let chats = await response2.json();
@@ -354,7 +354,9 @@ function filterAndDisplayNewMsg(messages) {
     const newMessages = [].concat(messages || [])
         .filter(msg => msg.idMessage > lastMessageId);
 
-    if (newMessages.length) {
+    console.log("lastMessageID" + lastMessageId);
+
+    if (newMessages.length && lastMessageId !== 0) {
         displayMessages(newMessages);
     }
 }

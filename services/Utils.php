@@ -115,6 +115,12 @@ class Utils
 
     }
 
+    /**
+     * Save an image to the directory specified with dirPath
+     * @param string $currentPage
+     * @param string $dirPath
+     * @return string
+     */
     public static function savePicToDir(string $currentPage, string $dirPath): string{
 
         Utils::checkUploadedPic($currentPage);
@@ -128,6 +134,11 @@ class Utils
         return $name;
     }
 
+    /**
+     * Delete the specified old image
+     * @param string $oldPic
+     * @return void
+     */
     public static function deleteOldPic(string $oldPic): void{
         if (!empty($oldPic) && file_exists($oldPic)) {
             unlink($oldPic);

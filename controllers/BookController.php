@@ -28,7 +28,7 @@ class BookController
      */
     public function showBooks(): void
     {
-        $search = htmlspecialchars(Utils::request("search"));
+        $search = htmlspecialchars(Utils::request("search") ?? '');
 
         $bookManager = new BookManager();
 
@@ -96,6 +96,9 @@ class BookController
 
         $bookManager = new BookManager();
         $book = $bookManager->getBookByID($bookId);
+
+        if (!$book)
+            Utils::redirect("myaccount");
 
         $view = new View();
         $view->render("editbook", ['book' => $book], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
@@ -192,6 +195,17 @@ class BookController
             }
         }
         Utils::redirect($location);
+
+    }
+
+    /**
+     * Function called to display the "404 page not found" page
+     * @return void
+     */
+    public function show404(): void
+    {
+        $view = new View();
+        $view->render("404", [], ['unreadMSG' => ChatController::getUnreadMessagesCount()]);
 
     }
 

@@ -107,15 +107,17 @@ class BookManager extends AbstractEntityManager
      * @param $idBook
      * @return int
      */
-    public function getBookOwnerID($idBook): int
+    public function getBookOwnerID($idBook): ?int
     {
         error_log("idbook:".$idBook);
         $sql = "SELECT idOwner from books where idBook = :idBook;";
         $result = $this->db->query($sql, ['idBook' => $idBook]);
         $ownerID = $result->fetch();
 
+        if($ownerID)
         return $ownerID["idOwner"];
 
+        return null;
     }
     public function setBookPicById(int $idBook, string $name): ?bool
     {

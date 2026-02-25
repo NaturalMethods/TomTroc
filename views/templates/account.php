@@ -10,7 +10,7 @@
             <div class="accountinfosviewer flex-col centercol roundedcorner">
 
                 <div class=" flex-col ">
-                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" alt="user image" class="roundeduserimage">
+                    <img src="<?=USERS_IMAGES.$user->getUserPic() ?>" alt="User image of <?= $user->getUsername() ?>" class="roundeduserimage">
                     <form class="centertext" method="POST" action="index.php" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="uploadUserPic">
                         <input
@@ -60,7 +60,7 @@
                     <input type="hidden" name="id" value="<?= $user->getIdUser() ?>">
 
                     <div class="field flex-col">
-                        <label class="text16px min320">Vos informations personnelles</label>
+                        <span class="text16px min320">Vos informations personnelles</span>
                     </div>
                     <span class="redtext redbox" <?= $errorMessage['emailExistsMessage'] ?>>Cette adresse mail est déjà utilisée</span>
                     <span class="redtext redbox" <?= $errorMessage['usernameExistsMessage'] ?>>Ce pseudo est déjà utilisée</span>

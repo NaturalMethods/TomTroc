@@ -17,8 +17,8 @@
 
         </div>
         <div class="chatbox flex-row">
-            <label for="sendBtn" hidden >Chat bar</label>
-            <label for="chatbar" hidden>chat Bar</label><input title="chatbar" id="chatbar" class="chatbar lightgrey14pxtext" type="text" name="chatbar" placeholder="Tapez votre message ici" />
+            <label for="sendBtn" class="sr-only" >Chat bar</label>
+            <label for="chatbar" class="sr-only">chat Bar</label><input title="chatbar" id="chatbar" class="chatbar lightgrey14pxtext" type="text" name="chatbar" placeholder="Tapez votre message ici" />
             <button name="send" id="sendBtn" value="send" class="chatsend greenButton">Envoyer</button>
         </div>
     </div>
